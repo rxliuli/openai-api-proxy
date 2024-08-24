@@ -1,5 +1,5 @@
 import { IChat } from './base'
-import { GoogleGenerativeAI, Tool } from '@google/generative-ai'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 import GoogleAI from '@google/generative-ai'
 import OpenAI from 'openai'
 
@@ -128,7 +128,11 @@ export function google(env: Record<string, string>): IChat {
           ],
         } as OpenAI.ChatCompletionChunk
       }
-      if (req.stream_options?.include_usage && last) {
+      if (!last) {
+        throw new Error('No response from google')
+      }
+
+      if (req.stream_options?.include_usage) {
         yield {
           ...fields(),
           choices: [],
@@ -137,6 +141,17 @@ export function google(env: Record<string, string>): IChat {
             completion_tokens: last.usageMetadata!.candidatesTokenCount,
             total_tokens: last.usageMetadata!.totalTokenCount,
           },
+        } as OpenAI.ChatCompletionChunk
+      } else {
+        yield {
+          ...fields(),
+          choices: [
+            {
+              index: 0,
+              delta: {},
+              finish_reason: 'stop',
+            },
+          ],
         } as OpenAI.ChatCompletionChunk
       }
     },

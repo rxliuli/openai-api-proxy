@@ -62,6 +62,9 @@ export async function authenticate(options: {
   clientEmail: string
   privateKey: string
 }): Promise<Token> {
+  if (!options.clientEmail || !options.privateKey) {
+    throw new Error('clientEmail and privateKey are required')
+  }
   if (token === null) {
     token = await createToken(options)
   } else if (token.expires_at < Math.floor(Date.now() / 1000)) {

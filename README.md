@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Provides the same agent OpenAI API interface for different LLM models and supports deployment to any Edge Runtime environment.
+Provides the same proxy OpenAI API interface for different LLM models, and supports deployment to any Edge Runtime environment.
 
 Supported models
 
@@ -18,25 +18,25 @@ Supported models
 
 Environment variables
 
-- `API_KEY`: proxy API Key, which must be set when calling the proxy API
+- `API_KEY`: Proxy API Key, required when calling the proxy API
 
-- OpenAI: Support OpenAI models, such as `gpt-4o-mini`
+- OpenAI: Supports OpenAI models, e.g. `gpt-4o-mini`
   - `OPENAI_API_KEY`: OpenAI API Key
-- VertexAI Anthropic: Support Anthropic models on Google Vertex AI, such as `claude-3-5-sonnet@20240620`
+- VertexAI Anthropic: Supports Anthropic models on Google Vertex AI, e.g. `claude-3-5-sonnet@20240620`
   - `VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL`: Google Cloud Service Account Email
   - `VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY`: Google Cloud Service Account Private Key
   - `VERTEX_ANTROPIC_REGION`: Google Vertex AI Anthropic Region
   - `VERTEX_ANTROPIC_PROJECTID`: Google Vertex AI Anthropic Project ID
-- Anthropic: Support Anthropic models, such as `claude-3-5-sonnet-20240620`
+- Anthropic: Supports Anthropic models, e.g. `claude-3-5-sonnet-20240620`
   - `ANTROPIC_API_KEY`: Anthropic API Key
-- Google Gemini: Support Google Gemini models, such as `gemini-1.5-flash`
+- Google Gemini: Supports Google Gemini models, e.g. `gemini-1.5-flash`
   - `GOOGLE_GEN_AI_API_KEY`: Google Gemini API Key
 
 ## Usage
 
-Once deployed successfully, different models can be called through OpenAI’s API interface.
+Once deployed successfully, you can call different models through OpenAI's API interface.
 
-For example, calling OpenAI’s API interface:
+For example, calling OpenAI's API interface:
 
 ```bash
 curl http://localhost:8787/v1/chat/completions \
@@ -53,7 +53,7 @@ curl http://localhost:8787/v1/chat/completions \
    }'
 ```
 
-Or call Anthropic’s API interface:
+Or calling Anthropic's API interface:
 
 ```bash
 curl http://localhost:8787/v1/chat/completions \
@@ -70,7 +70,7 @@ curl http://localhost:8787/v1/chat/completions \
    }'
 ```
 
-And can be used in OpenAI’s official SDK, for example:
+And it can be used in OpenAI's official SDK, for example:
 
 ```ts
 const openai = new OpenAI({

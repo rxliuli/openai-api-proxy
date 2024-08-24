@@ -1,6 +1,9 @@
 import { expect, it } from 'vitest'
 import { AnthropicVertexWeb } from '../web'
-import { AnthropicVertex, AnthropicVertex as OriginAnthropicVertex } from '@anthropic-ai/vertex-sdk'
+import {
+  AnthropicVertex,
+  AnthropicVertex as OriginAnthropicVertex,
+} from '@anthropic-ai/vertex-sdk'
 import { authenticate } from '../authenticate'
 import { omit } from 'lodash-es'
 import { ChatAnthropic } from 'langchain-anthropic-edge'
@@ -53,7 +56,7 @@ it('should call Custom Client and Origin Client', async () => {
   expect(r1).not.undefined
   expect(r2).not.undefined
   expect(omit(r1, 'id')).deep.equal(omit(r2, 'id'))
-}, 10_000)
+}, 20_000)
 
 it('Call Anthropic Vertex on nodejs', async () => {
   const client = new AnthropicVertex({

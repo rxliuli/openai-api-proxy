@@ -149,7 +149,6 @@ export function anthropicBase(
       signal.onabort = () => stream.controller.abort()
       const chunks: AnthropicTypes.Messages.RawMessageStreamEvent[] = []
       let start: AnthropicTypes.Messages.Message | undefined
-      let delta: AnthropicTypes.Messages.MessageDeltaEvent | undefined
       for await (const it of stream) {
         chunks.push(it)
         const fileds = () => ({
@@ -176,28 +175,29 @@ export function anthropicBase(
             ],
           } as OpenAI.ChatCompletionChunk
         } else if (it.type === 'message_delta') {
-          delta = it
-          yield {
-            ...fileds(),
-            choices: [
-              {
-                index: 0,
-                delta: {},
-                finish_reason: 'stop',
+          if (req.stream_options?.include_usage) {
+            yield {
+              ...fileds(),
+              choices: [],
+              usage: {
+                prompt_tokens: start!.usage.input_tokens,
+                completion_tokens: it!.usage.output_tokens,
+                total_tokens:
+                  start!.usage.input_tokens + it!.usage.output_tokens,
               },
-            ],
-          } as OpenAI.ChatCompletionChunk
-        } else if (it.type === 'message_stop') {
-          yield {
-            ...fileds(),
-            choices: [],
-            usage: {
-              prompt_tokens: start!.usage.input_tokens,
-              completion_tokens: delta!.usage.output_tokens,
-              total_tokens:
-                start!.usage.input_tokens + delta!.usage.output_tokens,
-            },
-          } as OpenAI.ChatCompletionChunk
+            } as OpenAI.ChatCompletionChunk
+          } else {
+            yield {
+              ...fileds(),
+              choices: [
+                {
+                  index: 0,
+                  delta: {},
+                  finish_reason: 'stop',
+                },
+              ],
+            } as OpenAI.ChatCompletionChunk
+          }
         }
       }
     },

@@ -1,11 +1,12 @@
 import { beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import app from '..'
 import OpenAI from 'openai'
-import { omit } from 'lodash-es'
+import { omit, pick } from 'lodash-es'
 import { AnthropicVertex } from '@anthropic-ai/vertex-sdk'
 import { GoogleAuth } from 'google-auth-library'
 import { TextBlock } from '@anthropic-ai/sdk/resources/messages.mjs'
 import { anthropic } from '../llm/anthropic'
+import { testClient } from 'hono/testing'
 
 const MOCK_ENV = {
   API_KEY: import.meta.env.VITE_API_KEY,
@@ -196,7 +197,13 @@ describe('stream', () => {
 describe('list models', async () => {
   it('no api key', async () => {
     const r = (await (
-      await app.request('/v1/models', {}, {})
+      await app.request(
+        '/v1/models',
+        {
+          headers: { Authorization: 'Bearer ' + import.meta.env.VITE_API_KEY },
+        },
+        pick(MOCK_ENV, 'API_KEY'),
+      )
     ).json()) as OpenAI.Models.ModelsPage
     expect(r.data).empty
   })
@@ -204,18 +211,15 @@ describe('list models', async () => {
     const r = (await (
       await app.request(
         '/v1/models',
-        {},
-        { ANTROPIC_API_KEY: import.meta.env.VITE_ANTROPIC_API_KEY },
+        {
+          headers: {
+            Authorization: 'Bearer ' + import.meta.env.VITE_API_KEY,
+          },
+        },
+        pick(MOCK_ENV, 'API_KEY', 'ANTROPIC_API_KEY'),
       )
     ).json()) as OpenAI.Models.ModelsPage
-    expect(r.data).deep.eq(
-      anthropic({} as any).supportModels.map((it) => ({
-        id: it,
-        object: 'model',
-        owned_by: 'system',
-        created: 0,
-      })),
-    )
+    expect(r.data.map((it) => it.id)).deep.eq(anthropic(MOCK_ENV).supportModels)
   })
   it('openai api key', async () => {
     const client = new OpenAI({
@@ -225,6 +229,6 @@ describe('list models', async () => {
       },
     })
     const r = await client.models.list()
-    console.log(r)
+    expect(r.data).not.empty
   })
 })

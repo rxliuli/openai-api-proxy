@@ -4,16 +4,16 @@ import { it, expect } from 'vitest'
 
 it('should authenticate', async () => {
   const token = await authenticate({
-    clientEmail: process.env.VITE_GOOGLE_SA_CLIENT_EMAIL!,
-    privateKey: process.env.VITE_GOOGLE_SA_PRIVATE_KEY!,
+    clientEmail: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL!,
+    privateKey: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY!,
   })
   expect(token).toBeDefined()
 })
 
 it('should call anthropic vertex', async () => {
   const token = await authenticate({
-    clientEmail: process.env.VITE_GOOGLE_SA_CLIENT_EMAIL!,
-    privateKey: process.env.VITE_GOOGLE_SA_PRIVATE_KEY!,
+    clientEmail: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL!,
+    privateKey: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY!,
   })
   const client = new AnthropicVertexWeb({
     accessToken: token.access_token,
@@ -42,8 +42,8 @@ function buildUrl({
 
 it('should authenticate on edge runtime', async () => {
   const token = await authenticate({
-    clientEmail: process.env.VITE_GOOGLE_SA_CLIENT_EMAIL!,
-    privateKey: process.env.VITE_GOOGLE_SA_PRIVATE_KEY!,
+    clientEmail: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL!,
+    privateKey: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY!,
   })
   expect(token).toBeDefined()
   const url = buildUrl({
