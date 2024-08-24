@@ -1,8 +1,10 @@
-import { Context } from 'hono'
-import OpenAI from 'openai'
+import OpenAI, { ClientOptions } from 'openai'
 import { IChat } from './base'
 
-export function openai(env: Record<string, string>): IChat {
+export function openaiBase(
+  env: Record<string, string>,
+  options?: ClientOptions,
+): IChat {
   return {
     name: 'openai',
     supportModels: [
@@ -40,7 +42,7 @@ export function openai(env: Record<string, string>): IChat {
     ],
     requiredEnv: ['OPENAI_API_KEY'],
     invoke(req) {
-      const client = new OpenAI({ apiKey: env.OPENAI_API_KEY })
+      const client = new OpenAI(options)
       return client.chat.completions.create({ ...req, stream: false })
     },
     async *stream(req, signal) {
@@ -54,4 +56,10 @@ export function openai(env: Record<string, string>): IChat {
       }
     },
   }
+}
+
+export function openai(env: Record<string, string>): IChat {
+  return openaiBase(env, {
+    apiKey: env.OPENAI_API_KEY,
+  })
 }

@@ -10,7 +10,7 @@
 - [x] Anthropic
 - [x] Google Vertex Anthropic
 - [x] Google Gemini
-- [ ] DeepSeek
+- [x] DeepSeek
 
 ## 部署
 
@@ -31,6 +31,8 @@
   - `ANTROPIC_API_KEY`: Anthropic API Key
 - Google Gemini: 支持 Google Gemini 模型，例如 `gemini-1.5-flash`
   - `GOOGLE_GEN_AI_API_KEY`: Google Gemini API Key
+- DeepSeek: 支持 DeepSeek 模型，例如 `deepseek-chat`
+  - `DEEPSEEK_API_KEY`: DeepSeek API Key
 
 ## 使用
 

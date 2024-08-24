@@ -10,7 +10,7 @@ Supported models
 - [x] Anthropic
 - [x] Google Vertex Anthropic
 - [x] Google Gemini
-- [ ] DeepSeek
+- [x] DeepSeek
 
 ## Deployment
 
@@ -31,6 +31,8 @@ Environment variables
   - `ANTROPIC_API_KEY`: Anthropic API Key
 - Google Gemini: Supports Google Gemini models, e.g. `gemini-1.5-flash`
   - `GOOGLE_GEN_AI_API_KEY`: Google Gemini API Key
+- DeepSeek: Supports DeepSeek models, e.g. `deepseek-chat`
+  - `DEEPSEEK_API_KEY`: DeepSeek API Key
 
 ## Usage
 

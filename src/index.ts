@@ -5,6 +5,9 @@ import { anthropic, anthropicVertex } from './llm/anthropic'
 import OpenAI from 'openai'
 import { uniq } from 'lodash-es'
 import { google } from './llm/google'
+import { deepseek } from './llm/deepseek'
+import { serializeError } from 'serialize-error'
+import { HTTPException } from 'hono/http-exception'
 
 interface Bindings {
   API_KEY: string
@@ -17,6 +20,7 @@ function getModels(env: Record<string, string>) {
     anthropic(env),
     anthropicVertex(env),
     google(env),
+    deepseek(env),
   ].filter((it) => it.requiredEnv.every((it) => it in env))
 }
 
@@ -43,11 +47,19 @@ curl https://api.openai.com/v1/chat/completions \
     }
     return next()
   })
+  .use(async (c, next) => {
+    await next()
+    if (c.error) {
+      throw new HTTPException((c.error as any)?.status ?? 500, {
+        message: serializeError(c.error).message,
+      })
+    }
+  })
   .post('/v1/chat/completions', async (c) => {
-    const list = getModels(c.env as any)
     const req = (await c.req.json()) as
       | OpenAI.ChatCompletionCreateParamsNonStreaming
       | OpenAI.ChatCompletionCreateParamsStreaming
+    const list = getModels(c.env as any)
     const llm = list.find((it) => it.supportModels.includes(req.model))
     if (!llm) {
       return c.json({ error: `Model ${req.model} not supported` }, 400)

@@ -213,6 +213,7 @@ export function anthropicVertex(env: Record<string, string>): IAnthropicVertex {
       projectId: env.VERTEX_ANTROPIC_PROJECTID,
     })
   const r = anthropicBase(createClient as any) as IAnthropicVertex
+  r.name = 'vertex-anthropic'
   r.requiredEnv = [
     'VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL',
     'VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY',
@@ -231,6 +232,7 @@ export function anthropicVertex(env: Record<string, string>): IAnthropicVertex {
 export function anthropic(env: Record<string, string>): IAnthropicVertex {
   const createClient = () => new Anthropic({ apiKey: env.ANTROPIC_API_KEY })
   const r = anthropicBase(createClient as any) as IAnthropicVertex
+  r.name = 'anthropic'
   r.requiredEnv = ['ANTROPIC_API_KEY']
   r.supportModels = [
     'claude-3-5-sonnet-20240620',
