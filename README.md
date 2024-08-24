@@ -85,3 +85,9 @@ const response = await openai.chat.completions.create({
 
 console.log(response)
 ```
+
+## Motivation
+
+I'm using Vertex AI's Anthropic model, but found that many LLM tools don't support configuring it directly. This prompted me to develop an API proxy. With this proxy, I can seamlessly use other AI models in any tool that supports the OpenAI API.
+
+Although there are some commercial services that resell LLM tokens, they usually require routing through their servers. Well, there's no need for another third party to know how I'm using it. This proxy can be deployed to any Edge Runtime environment, such as Cloudflare Workers, which provides up to 100k free requests per day for individuals.

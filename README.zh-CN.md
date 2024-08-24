@@ -85,3 +85,9 @@ const response = await openai.chat.completions.create({
 
 console.log(response)
 ```
+
+## 动机
+
+我正在使用 Vertex AI 的 Anthropic 模型，但发现许多 LLM 工具不支持直接配置它。这促使我萌生了开发一个 API 代理的想法。通过这个代理，我可以在任何支持 OpenAI API 的工具中无缝使用其他 AI 模型。
+
+虽然已经有一些转卖 LLM token 的商业服务，但它们通常需要通过他们的服务器中转。嗯，没必要让另一个第三方知道我如何使用的。这个代理可以部署到任何 Edge Runtime 环境，例如 Cloudflare Workers，对于个人而言，它提供高达 100k/天的免费请求次数。
