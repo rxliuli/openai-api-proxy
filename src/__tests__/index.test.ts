@@ -6,7 +6,6 @@ import { AnthropicVertex } from '@anthropic-ai/vertex-sdk'
 import { GoogleAuth } from 'google-auth-library'
 import { TextBlock } from '@anthropic-ai/sdk/resources/messages.mjs'
 import { anthropic } from '../llm/anthropic'
-import { testClient } from 'hono/testing'
 
 const MOCK_ENV = {
   API_KEY: import.meta.env.VITE_API_KEY,

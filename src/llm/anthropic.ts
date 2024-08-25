@@ -1,14 +1,14 @@
-import { Context } from 'hono'
 import OpenAI from 'openai'
 import type AnthropicTypes from '@anthropic-ai/sdk'
 import { AnthropicVertexWeb } from '../claude/web'
 import { IChat } from './base'
 import Anthropic from '@anthropic-ai/sdk'
+import { HTTPException } from 'hono/http-exception'
 
-interface IAnthropicVertex extends IChat {
+export interface IAnthropicVertex extends IChat {
   parseRequest(
     req: OpenAI.ChatCompletionCreateParams,
-  ): AnthropicTypes.MessageCreateParams
+  ): Promise<AnthropicTypes.MessageCreateParams>
   parseResponse(resp: AnthropicTypes.Messages.Message): OpenAI.ChatCompletion
 }
 
@@ -37,12 +37,84 @@ function convertToolChoice(
   }
 }
 
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  let binary = ''
+  const bytes = new Uint8Array(buffer)
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i])
+  }
+  return btoa(binary)
+}
+
+export async function getImageAsBase64(imageUrl: string): Promise<{
+  media_type: string
+  data: string
+}> {
+  // 检查是否已经是 data URL
+  if (imageUrl.startsWith('data:')) {
+    const [header, data] = imageUrl.split(',')
+    const media_type = header.split(':')[1].split(';')[0]
+    return { media_type, data }
+  }
+  // 如果不是 data URL，则按原方法处理
+  const response = await fetch(imageUrl)
+  const arrayBuffer = await response.arrayBuffer()
+  // 将 ArrayBuffer 转换为 base64
+  const base64 = arrayBufferToBase64(arrayBuffer)
+  return {
+    media_type: response.headers.get('content-type') || 'image/jpeg',
+    data: base64,
+  }
+}
+
+async function convertMessages(
+  messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[],
+): Promise<AnthropicTypes.MessageCreateParamsNonStreaming['messages']> {
+  return Promise.all(
+    messages.map(async (it) => {
+      if (!it.content) {
+        throw new HTTPException(400, {
+          message: 'content is required',
+        })
+      }
+      if (typeof it.content === 'string') {
+        return it as AnthropicTypes.MessageParam
+      }
+      return {
+        role: it.role,
+        content: await Promise.all(
+          it.content.map(async (it) => {
+            if (it.type === 'text') {
+              return {
+                type: 'text',
+                text: it.text,
+              } as AnthropicTypes.TextBlockParam
+            }
+            if (it.type === 'image_url') {
+              return {
+                type: 'image',
+                source: {
+                  type: 'base64',
+                  ...(await getImageAsBase64(it.image_url.url)),
+                },
+              } as AnthropicTypes.ImageBlockParam
+            }
+            throw new HTTPException(400, {
+              message: 'Unsupported message content type ' + it.type,
+            })
+          }),
+        ),
+      } as AnthropicTypes.MessageParam
+    }),
+  )
+}
+
 export function anthropicBase(
   createClient: () => AnthropicTypes,
 ): Omit<IAnthropicVertex, 'requiredEnv' | 'supportModels'> {
   return {
-    name: 'anthropic-vertex',
-    parseRequest(req) {
+    name: 'vertex-anthropic',
+    async parseRequest(req) {
       let r: AnthropicTypes.MessageCreateParamsNonStreaming = {
         stream: false,
         stop_sequences:
@@ -53,23 +125,17 @@ export function anthropicBase(
             : undefined,
         system: req.messages.find((it) => it.role === 'system')?.content,
         model: req.model,
-        messages: req.messages
-          .filter((it) =>
+        messages: await convertMessages(
+          req.messages.filter((it) =>
             (
               [
                 'user',
                 'assistant',
               ] as OpenAI.ChatCompletionMessageParam['role'][]
             ).includes(it.role),
-          )
-          .map(
-            (it) =>
-              ({
-                role: it.role,
-                content: it.content,
-              } as AnthropicTypes.MessageParam),
           ),
-        max_tokens: req.max_tokens ?? 1000,
+        ),
+        max_tokens: req.max_tokens ?? 8192,
         temperature: req.temperature!,
         metadata: {
           user_id: req.user,
@@ -134,16 +200,16 @@ export function anthropicBase(
       const client = createClient()
       return this.parseResponse(
         await client.messages.create(
-          this.parseRequest(
+          (await this.parseRequest(
             req,
-          ) as AnthropicTypes.MessageCreateParamsNonStreaming,
+          )) as AnthropicTypes.MessageCreateParamsNonStreaming,
         ),
       )
     },
     async *stream(req, signal) {
       const client = createClient()
       const stream = await client.messages.create({
-        ...this.parseRequest(req),
+        ...(await this.parseRequest(req)),
         stream: true,
       })
       signal.onabort = () => stream.controller.abort()
