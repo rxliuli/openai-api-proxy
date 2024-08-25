@@ -1,4 +1,4 @@
-import { Context, Hono } from 'hono'
+import { Hono } from 'hono'
 import { streamSSE } from 'hono/streaming'
 import { openai } from './llm/openai'
 import { anthropic, anthropicVertex } from './llm/anthropic'
@@ -8,6 +8,7 @@ import { google } from './llm/google'
 import { deepseek } from './llm/deepseek'
 import { serializeError } from 'serialize-error'
 import { HTTPException } from 'hono/http-exception'
+import { cors } from 'hono/cors'
 
 interface Bindings {
   API_KEY: string
@@ -38,6 +39,24 @@ curl https://api.openai.com/v1/chat/completions \
      "temperature": 0.7
    }'
 */
+  .use(
+    cors({
+      origin: (_origin, c) => {
+        return c.env.CORS_ORIGIN
+      },
+    }),
+  )
+  .use(async (c, next) => {
+    await next()
+    if (c.error) {
+      throw new HTTPException((c.error as any)?.status ?? 500, {
+        message: serializeError(c.error).message,
+      })
+    }
+  })
+  .options('/v1/chat/completions', async (c) => {
+    return c.json({ body: 'ok' })
+  })
   .use(async (c, next) => {
     if (!c.env.API_KEY) {
       return c.json({ error: 'Unauthorized' }, 401)
@@ -46,14 +65,6 @@ curl https://api.openai.com/v1/chat/completions \
       return c.json({ error: 'Unauthorized' }, 401)
     }
     return next()
-  })
-  .use(async (c, next) => {
-    await next()
-    if (c.error) {
-      throw new HTTPException((c.error as any)?.status ?? 500, {
-        message: serializeError(c.error).message,
-      })
-    }
   })
   .post('/v1/chat/completions', async (c) => {
     const req = (await c.req.json()) as

@@ -19,6 +19,7 @@
 环境变量
 
 - `API_KEY`: 代理 API Key，要求调用代理 API 时必须设置
+- `CORS_ORIGIN`: 允许的 CORS 域名，例如 `https://example.com`
 
 - OpenAI: 支持 OpenAI 模型，例如 `gpt-4o-mini`
   - `OPENAI_API_KEY`: OpenAI API Key

@@ -19,6 +19,7 @@ Supported models
 Environment variables
 
 - `API_KEY`: Proxy API Key, required when calling the proxy API
+- `CORS_ORIGIN`: Allowed CORS domain, e.g. `https://example.com`
 
 - OpenAI: Supports OpenAI models, e.g. `gpt-4o-mini`
   - `OPENAI_API_KEY`: OpenAI API Key
