@@ -34,6 +34,10 @@
   - `GOOGLE_GEN_AI_API_KEY`: Google Gemini API Key
 - DeepSeek: 支持 DeepSeek 模型，例如 `deepseek-chat`
   - `DEEPSEEK_API_KEY`: DeepSeek API Key
+- Moonshot: 支持 Moonshot 模型，例如 `moonshot-v1-8k`
+  - `MOONSHOT_API_KEY`: Moonshot API Key
+- 零一万物: 支持零一万物模型，例如 `yi-large`
+  - `LINGYIWANWU_API_KEY`: 零一万物 API Key
 
 ## 使用
 

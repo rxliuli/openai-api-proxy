@@ -9,6 +9,8 @@ import { deepseek } from './llm/deepseek'
 import { serializeError } from 'serialize-error'
 import { HTTPException } from 'hono/http-exception'
 import { cors } from 'hono/cors'
+import { moonshot } from './llm/moonshot'
+import { lingyiwanwu } from './llm/lingyiwanwu'
 
 interface Bindings {
   API_KEY: string
@@ -22,6 +24,8 @@ function getModels(env: Record<string, string>) {
     anthropicVertex(env),
     google(env),
     deepseek(env),
+    moonshot(env),
+    lingyiwanwu(env),
   ].filter((it) => it.requiredEnv.every((it) => it in env))
 }
 
