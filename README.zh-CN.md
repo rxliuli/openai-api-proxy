@@ -11,6 +11,9 @@
 - [x] Google Vertex Anthropic
 - [x] Google Gemini
 - [x] DeepSeek
+- [x] Groq
+- [x] Moonshot
+- [x] 零一万物
 
 ## 部署
 

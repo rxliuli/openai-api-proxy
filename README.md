@@ -11,6 +11,7 @@ Supported models
 - [x] Google Vertex Anthropic
 - [x] Google Gemini
 - [x] DeepSeek
+- [x] Groq
 
 ## Deployment
 
