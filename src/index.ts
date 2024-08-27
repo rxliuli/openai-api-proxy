@@ -11,6 +11,7 @@ import { HTTPException } from 'hono/http-exception'
 import { cors } from 'hono/cors'
 import { moonshot } from './llm/moonshot'
 import { lingyiwanwu } from './llm/lingyiwanwu'
+import { groq } from './llm/groq'
 
 interface Bindings {
   API_KEY: string
@@ -26,6 +27,7 @@ function getModels(env: Record<string, string>) {
     deepseek(env),
     moonshot(env),
     lingyiwanwu(env),
+    groq(env),
   ].filter((it) => it.requiredEnv.every((it) => it in env))
 }
 
@@ -79,6 +81,7 @@ curl https://api.openai.com/v1/chat/completions \
     if (!llm) {
       return c.json({ error: `Model ${req.model} not supported` }, 400)
     }
+    console.log(req, llm.name)
     if (req.stream) {
       const abortController = new AbortController()
       return streamSSE(c, async (stream) => {

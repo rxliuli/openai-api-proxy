@@ -5,6 +5,7 @@ export function openaiBase(
   env: Record<string, string>,
   options?: ClientOptions,
 ): IChat {
+  const client = new OpenAI(options)
   return {
     name: 'openai',
     supportModels: [
@@ -42,11 +43,9 @@ export function openaiBase(
     ],
     requiredEnv: ['OPENAI_API_KEY'],
     invoke(req) {
-      const client = new OpenAI(options)
       return client.chat.completions.create({ ...req, stream: false })
     },
     async *stream(req, signal) {
-      const client = new OpenAI({ apiKey: env.OPENAI_API_KEY })
       const stream = await client.chat.completions.create(
         { ...req, stream: true },
         { signal },
