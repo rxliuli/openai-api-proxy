@@ -38,6 +38,8 @@
   - `MOONSHOT_API_KEY`: Moonshot API Key
 - 零一万物: 支持零一万物模型，例如 `yi-large`
   - `LINGYIWANWU_API_KEY`: 零一万物 API Key
+- Groq: 支持 Groq 模型，例如 `llama3-8b-8192`
+  - `GROQ_API_KEY`: Groq API Key
 
 ## 使用
 
@@ -92,6 +94,11 @@ const response = await openai.chat.completions.create({
 
 console.log(response)
 ```
+
+### OpenAI 兼容性
+
+- [/v1/chat/completions](https://platform.openai.com/docs/api-reference/chat/create)
+- [/v1/models](https://platform.openai.com/docs/api-reference/models)
 
 ## 动机
 

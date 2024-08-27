@@ -34,6 +34,8 @@ Environment variables
   - `GOOGLE_GEN_AI_API_KEY`: Google Gemini API Key
 - DeepSeek: Supports DeepSeek models, e.g. `deepseek-chat`
   - `DEEPSEEK_API_KEY`: DeepSeek API Key
+- Groq: Supports Groq models, e.g. `llama3-8b-8192`
+  - `GROQ_API_KEY`: Groq API Key
 
 ## Usage
 
@@ -88,6 +90,11 @@ const response = await openai.chat.completions.create({
 
 console.log(response)
 ```
+
+### OpenAI Compatibility
+
+- [/v1/chat/completions](https://platform.openai.com/docs/api-reference/chat/create)
+- [/v1/models](https://platform.openai.com/docs/api-reference/models)
 
 ## Motivation
 
