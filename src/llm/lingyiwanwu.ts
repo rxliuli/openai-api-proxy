@@ -1,7 +1,7 @@
 import { openaiBase } from './openai'
 
 export function lingyiwanwu(env: Record<string, string>) {
-  const r = openaiBase(env, {
+  const r = openaiBase({
     baseURL: 'https://api.lingyiwanwu.com/v1',
     apiKey: env.LINGYIWANWU_API_KEY,
   })

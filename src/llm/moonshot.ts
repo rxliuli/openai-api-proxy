@@ -1,7 +1,7 @@
 import { openaiBase } from './openai'
 
 export function moonshot(env: Record<string, string>) {
-  const r = openaiBase(env, {
+  const r = openaiBase({
     baseURL: 'https://api.moonshot.cn/v1',
     apiKey: env.MOONSHOT_API_KEY,
   })

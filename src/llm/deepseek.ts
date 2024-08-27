@@ -2,7 +2,7 @@ import { IChat } from './base'
 import { openaiBase } from './openai'
 
 export function deepseek(env: Record<string, string>): IChat {
-  const r = openaiBase(env, {
+  const r = openaiBase({
     apiKey: env.DEEPSEEK_API_KEY,
     baseURL: 'https://api.deepseek.com',
   })

@@ -1,11 +1,7 @@
 import OpenAI, { ClientOptions } from 'openai'
 import { IChat } from './base'
 
-export function openaiBase(
-  env: Record<string, string>,
-  options?: ClientOptions,
-): IChat {
-  const client = new OpenAI(options)
+export function openaiBase(options?: ClientOptions): IChat {
   return {
     name: 'openai',
     supportModels: [
@@ -43,9 +39,11 @@ export function openaiBase(
     ],
     requiredEnv: ['OPENAI_API_KEY'],
     invoke(req) {
+      const client = new OpenAI(options)
       return client.chat.completions.create({ ...req, stream: false })
     },
     async *stream(req, signal) {
+      const client = new OpenAI(options)
       const stream = await client.chat.completions.create(
         { ...req, stream: true },
         { signal },
@@ -58,7 +56,7 @@ export function openaiBase(
 }
 
 export function openai(env: Record<string, string>): IChat {
-  return openaiBase(env, {
+  return openaiBase({
     apiKey: env.OPENAI_API_KEY,
   })
 }

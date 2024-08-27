@@ -109,6 +109,13 @@ async function convertMessages(
   )
 }
 
+function getModelMaxTokens(model: string): number {
+  if (model.startsWith('claude-3-')) {
+    return 4096
+  }
+  return 8192
+}
+
 export function anthropicBase(
   createClient: () => AnthropicTypes,
 ): Omit<IAnthropicVertex, 'requiredEnv' | 'supportModels'> {
@@ -135,7 +142,7 @@ export function anthropicBase(
             ).includes(it.role),
           ),
         ),
-        max_tokens: req.max_tokens ?? 8192,
+        max_tokens: req.max_tokens ?? getModelMaxTokens(req.model),
         temperature: req.temperature!,
         metadata: {
           user_id: req.user,
