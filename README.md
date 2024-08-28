@@ -12,6 +12,7 @@ Supported models
 - [x] Google Gemini
 - [x] DeepSeek
 - [x] Groq
+- [x] Cerebras
 
 ## Deployment
 
@@ -37,6 +38,8 @@ Environment variables
   - `DEEPSEEK_API_KEY`: DeepSeek API Key
 - Groq: Supports Groq models, e.g. `llama3-8b-8192`
   - `GROQ_API_KEY`: Groq API Key
+- Cerebras: Supports Cerebras models, e.g. `cerebras-gpt-2.7b`
+  - `CEREBRAS_API_KEY`: Cerebras API Key
 
 ## Usage
 
@@ -96,6 +99,18 @@ console.log(response)
 
 - [/v1/chat/completions](https://platform.openai.com/docs/api-reference/chat/create)
 - [/v1/models](https://platform.openai.com/docs/api-reference/models)
+
+### Supported Models
+
+Due to some models existing across multiple vendors, certain model names may have prefixes added, such as `groq/llama3-8b-8192`, indicating Groq's `llama3-8b-8192` model.
+
+Get a list of supported models via API:
+
+```bash
+curl http://localhost:8787/v1/models \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json"
+```
 
 ## Motivation
 

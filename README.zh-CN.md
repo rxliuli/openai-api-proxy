@@ -14,6 +14,7 @@
 - [x] Groq
 - [x] Moonshot
 - [x] 零一万物
+- [x] Cerebras
 
 ## 部署
 
@@ -43,6 +44,8 @@
   - `LINGYIWANWU_API_KEY`: 零一万物 API Key
 - Groq: 支持 Groq 模型，例如 `llama3-8b-8192`
   - `GROQ_API_KEY`: Groq API Key
+- Cerebras: 支持 Cerebras 模型，例如 `llama-3-8b`
+  - `CEREBRAS_API_KEY`: Cerebras API Key
 
 ## 使用
 
@@ -102,6 +105,18 @@ console.log(response)
 
 - [/v1/chat/completions](https://platform.openai.com/docs/api-reference/chat/create)
 - [/v1/models](https://platform.openai.com/docs/api-reference/models)
+
+### 支持的模型列表
+
+由于一些模型在多个供应商中存在，所以一些模型的名称可能会添加前缀，例如 `groq/llama3-8b-8192`，表示 Groq 的 `llama3-8b-8192` 模型。
+
+通过 API 获取支持的模型列表：
+
+```bash
+curl http://localhost:8787/v1/models \
+  -H "Authorization: Bearer $API_KEY" \
+  -H "Content-Type: application/json"
+```
 
 ## 动机
 

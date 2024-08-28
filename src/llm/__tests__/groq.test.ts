@@ -7,7 +7,7 @@ it('groq', async () => {
   })
   const res = await client.invoke({
     messages: [{ role: 'user', content: 'Hello?' }],
-    model: 'llama3-8b-8192',
+    model: 'groq/llama3-8b-8192',
     temperature: 0.5,
     presence_penalty: 0,
     frequency_penalty: 0,
@@ -23,7 +23,7 @@ it('stream', async () => {
   const res = client.stream(
     {
       messages: [{ role: 'user', content: 'Hello?' }],
-      model: 'llama3-8b-8192',
+      model: 'groq/llama3-8b-8192',
       temperature: 0.5,
       presence_penalty: 0,
       frequency_penalty: 0,

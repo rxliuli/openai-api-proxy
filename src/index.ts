@@ -3,7 +3,7 @@ import { streamSSE } from 'hono/streaming'
 import { openai } from './llm/openai'
 import { anthropic, anthropicVertex } from './llm/anthropic'
 import OpenAI from 'openai'
-import { uniq } from 'lodash-es'
+import { uniq, uniqBy } from 'lodash-es'
 import { google } from './llm/google'
 import { deepseek } from './llm/deepseek'
 import { serializeError } from 'serialize-error'
@@ -94,17 +94,18 @@ curl https://api.openai.com/v1/chat/completions \
     return c.json(await llm?.invoke(req))
   })
   .get('/v1/models', async (c) => {
-    const list = uniq(getModels(c.env as any).flatMap((it) => it.supportModels))
     return c.json({
       object: 'list',
-      data: list.map(
-        (it) =>
-          ({
-            id: it,
-            object: 'model',
-            owned_by: 'system',
-            created: Math.floor(Date.now() / 1000),
-          } as OpenAI.Models.Model),
+      data: getModels(c.env as any).flatMap((it) =>
+        it.supportModels.map(
+          (model) =>
+            ({
+              id: model,
+              object: 'model',
+              owned_by: it.name,
+              created: Math.floor(Date.now() / 1000),
+            } as OpenAI.Models.Model),
+        ),
       ),
     } as OpenAI.Models.ModelsPage)
   })

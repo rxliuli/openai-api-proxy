@@ -1,7 +1,12 @@
 import OpenAI, { ClientOptions } from 'openai'
 import { IChat } from './base'
+import { ChatCompletionCreateParams } from 'openai/resources/index.mjs'
 
-export function openaiBase(options?: ClientOptions): IChat {
+export function openaiBase(
+  options?: ClientOptions & {
+    pre?: (req: ChatCompletionCreateParams) => ChatCompletionCreateParams
+  },
+): IChat {
   return {
     name: 'openai',
     supportModels: [
@@ -40,12 +45,24 @@ export function openaiBase(options?: ClientOptions): IChat {
     requiredEnv: ['OPENAI_API_KEY'],
     invoke(req) {
       const client = new OpenAI(options)
-      return client.chat.completions.create({ ...req, stream: false })
+      return client.chat.completions.create(
+        options?.pre
+          ? (options.pre({
+              ...req,
+              stream: false,
+            }) as OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming)
+          : { ...req, stream: false },
+      )
     },
     async *stream(req, signal) {
       const client = new OpenAI(options)
       const stream = await client.chat.completions.create(
-        { ...req, stream: true },
+        options?.pre
+          ? (options.pre({
+              ...req,
+              stream: true,
+            }) as OpenAI.Chat.Completions.ChatCompletionCreateParamsStreaming)
+          : { ...req, stream: true },
         { signal },
       )
       for await (const it of stream) {
