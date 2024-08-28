@@ -9,6 +9,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^0.27.0",
     "@anthropic-ai/vertex-sdk": "^0.4.1",
+    "@azure/identity": "^4.4.1",
     "@google/generative-ai": "^0.17.1",
     "hono": "^4.5.7",
     "jose": "^5.7.0",

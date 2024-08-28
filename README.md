@@ -13,6 +13,7 @@ Supported models
 - [x] DeepSeek
 - [x] Groq
 - [x] Cerebras
+- [x] Azure OpenAI
 
 ## Deployment
 
@@ -40,6 +41,11 @@ Environment variables
   - `GROQ_API_KEY`: Groq API Key
 - Cerebras: Supports Cerebras models, e.g. `llama-3-8b`
   - `CEREBRAS_API_KEY`: Cerebras API Key
+- Azure OpenAI: Supports Azure OpenAI models, e.g. `gpt-4o-mini`
+  - `AZURE_OPENAI_API_KEY`: Azure OpenAI API Key
+  - `AZURE_OPENAI_ENDPOINT`: Azure OpenAI Endpoint
+  - `AZURE_API_VERSION`: Azure OpenAI API Version
+  - `AZURE_DEPLOYMENT_MODELS`: Azure OpenAI Deployment Models, such as `gpt-4o-mini:gpt-4o-mini-dev,gpt-35-turbo:gpt-35-dev`, represent two models, `gpt-4o-mini` and `gpt-35-turbo`, corresponding to two deployments, `gpt-4o-mini-dev` and `gpt-35-dev` respectively.
 
 ## Usage
 

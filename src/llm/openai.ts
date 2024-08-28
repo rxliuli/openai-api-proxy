@@ -1,12 +1,12 @@
-import OpenAI, { ClientOptions } from 'openai'
+import OpenAI, { AzureOpenAI, ClientOptions } from 'openai'
 import { IChat } from './base'
 import { ChatCompletionCreateParams } from 'openai/resources/index.mjs'
 
-export function openaiBase(
-  options?: ClientOptions & {
-    pre?: (req: ChatCompletionCreateParams) => ChatCompletionCreateParams
-  },
-): IChat {
+export function openaiBase(options: {
+  createClient: (req: ChatCompletionCreateParams) => OpenAI | AzureOpenAI
+  pre?: (req: ChatCompletionCreateParams) => ChatCompletionCreateParams
+}): IChat {
+  const pre = options.pre ?? ((req) => req)
   return {
     name: 'openai',
     supportModels: [
@@ -44,27 +44,20 @@ export function openaiBase(
     ],
     requiredEnv: ['OPENAI_API_KEY'],
     invoke(req) {
-      const client = new OpenAI(options)
-      return client.chat.completions.create(
-        options?.pre
-          ? (options.pre({
-              ...req,
-              stream: false,
-            }) as OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming)
-          : { ...req, stream: false },
-      )
+      const _req = pre(req)
+      const client = options.createClient(_req)
+      return client.chat.completions.create({
+        ..._req,
+        stream: false,
+      })
     },
     async *stream(req, signal) {
-      const client = new OpenAI(options)
-      const stream = await client.chat.completions.create(
-        options?.pre
-          ? (options.pre({
-              ...req,
-              stream: true,
-            }) as OpenAI.Chat.Completions.ChatCompletionCreateParamsStreaming)
-          : { ...req, stream: true },
-        { signal },
-      )
+      const _req = pre(req)
+      const client = options.createClient(_req)
+      const stream = await client.chat.completions.create({
+        ..._req,
+        stream: true,
+      })
       for await (const it of stream) {
         yield it
       }
@@ -74,6 +67,9 @@ export function openaiBase(
 
 export function openai(env: Record<string, string>): IChat {
   return openaiBase({
-    apiKey: env.OPENAI_API_KEY,
+    createClient: () =>
+      new OpenAI({
+        apiKey: env.OPENAI_API_KEY,
+      }),
   })
 }

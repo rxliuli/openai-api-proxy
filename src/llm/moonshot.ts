@@ -1,9 +1,13 @@
+import OpenAI from 'openai'
 import { openaiBase } from './openai'
 
 export function moonshot(env: Record<string, string>) {
   const r = openaiBase({
-    baseURL: 'https://api.moonshot.cn/v1',
-    apiKey: env.MOONSHOT_API_KEY,
+    createClient: () =>
+      new OpenAI({
+        apiKey: env.MOONSHOT_API_KEY,
+        baseURL: 'https://api.moonshot.cn/v1',
+      }),
   })
   r.name = 'moonshot'
   r.requiredEnv = ['MOONSHOT_API_KEY']

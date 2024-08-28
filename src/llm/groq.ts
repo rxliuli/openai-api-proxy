@@ -1,3 +1,4 @@
+import OpenAI from 'openai'
 import { IChat } from './base'
 import { openaiBase } from './openai'
 
@@ -19,8 +20,11 @@ export function groq(env: Record<string, string>): IChat {
     'groq/whisper-large-v3': 'whisper-large-v3',
   }
   const r = openaiBase({
-    apiKey: env.GROQ_API_KEY,
-    baseURL: 'https://api.groq.com/openai/v1',
+    createClient: () =>
+      new OpenAI({
+        apiKey: env.GROQ_API_KEY,
+        baseURL: 'https://api.groq.com/openai/v1',
+      }),
     pre(req) {
       req.model = map[req.model as keyof typeof map]
       return req

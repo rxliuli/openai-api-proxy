@@ -15,6 +15,7 @@
 - [x] Moonshot
 - [x] 零一万物
 - [x] Cerebras
+- [x] Azure OpenAI
 
 ## 部署
 
@@ -46,6 +47,11 @@
   - `GROQ_API_KEY`: Groq API Key
 - Cerebras: 支持 Cerebras 模型，例如 `llama-3-8b`
   - `CEREBRAS_API_KEY`: Cerebras API Key
+- Azure OpenAI: 支持 Azure OpenAI 模型，例如 `gpt-4o-mini`
+  - `AZURE_OPENAI_API_KEY`: Azure OpenAI API Key
+  - `AZURE_OPENAI_ENDPOINT`: Azure OpenAI Endpoint
+  - `AZURE_API_VERSION`: Azure OpenAI API Version
+  - `AZURE_DEPLOYMENT_MODELS`: Azure OpenAI Deployment Models, 例如 `gpt-4o-mini:gpt-4o-mini-dev,gpt-35-turbo:gpt-35-dev`，表示 `gpt-4o-mini` 和 `gpt-35-turbo` 两个模型，分别对应 `gpt-4o-mini-dev` 和 `gpt-35-dev` 两个部署。
 
 ## 使用
 

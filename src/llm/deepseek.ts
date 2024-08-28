@@ -1,10 +1,14 @@
+import OpenAI from 'openai'
 import { IChat } from './base'
 import { openaiBase } from './openai'
 
 export function deepseek(env: Record<string, string>): IChat {
   const r = openaiBase({
-    apiKey: env.DEEPSEEK_API_KEY,
-    baseURL: 'https://api.deepseek.com',
+    createClient: () =>
+      new OpenAI({
+        apiKey: env.DEEPSEEK_API_KEY,
+        baseURL: 'https://api.deepseek.com',
+      }),
   })
   r.name = 'deepseek'
   r.requiredEnv = ['DEEPSEEK_API_KEY']
