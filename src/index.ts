@@ -12,6 +12,7 @@ import { cors } from 'hono/cors'
 import { moonshot } from './llm/moonshot'
 import { lingyiwanwu } from './llm/lingyiwanwu'
 import { groq } from './llm/groq'
+import { auzreOpenAI } from './llm/azure'
 
 interface Bindings {
   API_KEY: string
@@ -28,6 +29,7 @@ function getModels(env: Record<string, string>) {
     moonshot(env),
     lingyiwanwu(env),
     groq(env),
+    auzreOpenAI(env),
   ].filter((it) => it.requiredEnv.every((it) => it in env))
 }
 

@@ -26,7 +26,7 @@ export function auzreOpenAI(env: Record<string, string>) {
     'AZURE_API_VERSION',
     'AZURE_DEPLOYMENT_MODELS',
   ]
-  r.supportModels = env.AZURE_DEPLOYMENT_MODELS.split(',').map((it) => {
+  r.supportModels = (env.AZURE_DEPLOYMENT_MODELS ?? '').split(',').map((it) => {
     if (it.includes(':')) {
       const [model, deployment] = it.split(':')
       map[model] = deployment
