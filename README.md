@@ -38,7 +38,7 @@ Environment variables
   - `DEEPSEEK_API_KEY`: DeepSeek API Key
 - Groq: Supports Groq models, e.g. `llama3-8b-8192`
   - `GROQ_API_KEY`: Groq API Key
-- Cerebras: Supports Cerebras models, e.g. `cerebras-gpt-2.7b`
+- Cerebras: Supports Cerebras models, e.g. `llama-3-8b`
   - `CEREBRAS_API_KEY`: Cerebras API Key
 
 ## Usage
