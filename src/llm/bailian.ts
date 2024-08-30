@@ -4,7 +4,7 @@ import { openaiBase } from './openai'
 
 export function bailian(env: Record<string, string | undefined>): IChat {
   const r = openaiBase({
-    createClient: (req) => {
+    createClient: () => {
       return new OpenAI({
         baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
         apiKey: env.ALIYUN_BAILIAN_API_KEY,
