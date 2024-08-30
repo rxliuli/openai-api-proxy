@@ -16,10 +16,10 @@
 - [x] 零一万物
 - [x] Cerebras
 - [x] Azure OpenAI
-- [ ] Aliyun Bailian
+- [x] Cohere
+- [x] Aliyun Bailian
 - [ ] Ollama
 - [ ] Cloudflare Workers AI
-- [ ] Cohere
 - [ ] Coze
 - [ ] 豆包
 
@@ -58,6 +58,11 @@
   - `AZURE_OPENAI_ENDPOINT`: Azure OpenAI Endpoint
   - `AZURE_API_VERSION`: Azure OpenAI API Version
   - `AZURE_DEPLOYMENT_MODELS`: Azure OpenAI Deployment Models, 例如 `gpt-4o-mini:gpt-4o-mini-dev,gpt-35-turbo:gpt-35-dev`，表示 `gpt-4o-mini` 和 `gpt-35-turbo` 两个模型，分别对应 `gpt-4o-mini-dev` 和 `gpt-35-dev` 两个部署。
+- Cohere: 支持 Cohere 模型，例如 `command-r`
+  - `COHERE_API_KEY`: Cohere API Key
+- Aliyun Bailian: 支持阿里云百炼模型，例如 `qwen-max`
+  - `ALIYUN_BAILIAN_API_KEY`: 阿里云百炼 API Key
+  - `ALIYUN_BAILIAN_MODELS`: 自定义支持的阿里云百炼模型列表，例如 `qwen-max,qwen-7b-chat`，默认为 `qwen-max`
 
 ## 使用
 

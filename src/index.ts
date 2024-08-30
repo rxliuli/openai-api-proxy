@@ -3,7 +3,6 @@ import { streamSSE } from 'hono/streaming'
 import { openai } from './llm/openai'
 import { anthropic, anthropicVertex } from './llm/anthropic'
 import OpenAI from 'openai'
-import { uniq, uniqBy } from 'lodash-es'
 import { google } from './llm/google'
 import { deepseek } from './llm/deepseek'
 import { serializeError } from 'serialize-error'
@@ -13,6 +12,8 @@ import { moonshot } from './llm/moonshot'
 import { lingyiwanwu } from './llm/lingyiwanwu'
 import { groq } from './llm/groq'
 import { auzreOpenAI } from './llm/azure'
+import { bailian } from './llm/bailian'
+import { cohere } from './llm/cohere'
 
 interface Bindings {
   API_KEY: string
@@ -30,6 +31,8 @@ function getModels(env: Record<string, string>) {
     lingyiwanwu(env),
     groq(env),
     auzreOpenAI(env),
+    cohere(env),
+    bailian(env),
   ].filter((it) => it.requiredEnv.every((it) => it in env))
 }
 

@@ -15,3 +15,7 @@ export interface IChat {
     signal: AbortSignal,
   ): AsyncGenerator<ChatCompletionChunk>
 }
+
+export interface ChatEnv {
+  [key: string]: string | undefined
+}

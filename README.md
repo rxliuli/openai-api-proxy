@@ -14,6 +14,11 @@ Supported models
 - [x] Groq
 - [x] Cerebras
 - [x] Azure OpenAI
+- [x] Cohere
+- [x] Aliyun Bailian
+- [ ] Ollama
+- [ ] Cloudflare Workers AI
+- [ ] Coze
 
 ## Deployment
 
@@ -46,6 +51,11 @@ Environment variables
   - `AZURE_OPENAI_ENDPOINT`: Azure OpenAI Endpoint
   - `AZURE_API_VERSION`: Azure OpenAI API Version
   - `AZURE_DEPLOYMENT_MODELS`: Azure OpenAI Deployment Models, such as `gpt-4o-mini:gpt-4o-mini-dev,gpt-35-turbo:gpt-35-dev`, represent two models, `gpt-4o-mini` and `gpt-35-turbo`, corresponding to two deployments, `gpt-4o-mini-dev` and `gpt-35-dev` respectively.
+- Cohere: Supports Cohere models, e.g. `command-r`
+  - `COHERE_API_KEY`: Cohere API Key
+- Aliyun Bailian: Supports Aliyun Bailian models, e.g. `qwen-max`
+  - `ALIYUN_BAILIAN_API_KEY`: Aliyun Bailian API Key
+  - `ALIYUN_BAILIAN_MODELS`: Custom supported Aliyun Bailian models, e.g. `qwen-max,qwen-7b-chat`, default to `qwen-max`
 
 ## Usage
 
