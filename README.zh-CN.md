@@ -16,6 +16,12 @@
 - [x] 零一万物
 - [x] Cerebras
 - [x] Azure OpenAI
+- [ ] Aliyun Bailian
+- [ ] Ollama
+- [ ] Cloudflare Workers AI
+- [ ] Cohere
+- [ ] Coze
+- [ ] 豆包
 
 ## 部署
 
