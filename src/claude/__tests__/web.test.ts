@@ -1,12 +1,9 @@
 import { expect, it } from 'vitest'
 import { AnthropicVertexWeb } from '../web'
-import {
-  AnthropicVertex,
-  AnthropicVertex as OriginAnthropicVertex,
-} from '@anthropic-ai/vertex-sdk'
+import { AnthropicVertex } from '@anthropic-ai/vertex-sdk'
 import { authenticate } from '../authenticate'
 import { omit } from 'lodash-es'
-import { ChatAnthropic } from 'langchain-anthropic-edge'
+import { ChatAnthropic } from '@langchain/anthropic'
 import { GoogleAuth } from 'google-auth-library'
 
 it('should call anthropic vertex with access token', async () => {
@@ -39,12 +36,12 @@ it('should call Custom Client and Origin Client', async () => {
     projectId: import.meta.env.VITE_VERTEX_ANTROPIC_PROJECTID,
     accessToken: token.access_token,
   })
-  const origin = new OriginAnthropicVertex({
+  const origin = new AnthropicVertex({
     region: import.meta.env.VITE_VERTEX_ANTROPIC_REGION,
     projectId: import.meta.env.VITE_VERTEX_ANTROPIC_PROJECTID,
     accessToken: token.access_token,
   })
-  function call(client: AnthropicVertexWeb | OriginAnthropicVertex) {
+  function call(client: AnthropicVertexWeb | AnthropicVertex) {
     return client.messages.create({
       messages: [{ role: 'user', content: 'Hello!' }],
       model: 'claude-3-5-sonnet@20240620',
