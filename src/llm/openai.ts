@@ -41,6 +41,8 @@ export function openaiBase(options: {
       'davinci-002',
       'gpt-4-turbo',
       'gpt-4o-mini-2024-07-18',
+      'o1-preview',
+      'o1-mini',
     ],
     requiredEnv: ['OPENAI_API_KEY'],
     invoke(req) {
