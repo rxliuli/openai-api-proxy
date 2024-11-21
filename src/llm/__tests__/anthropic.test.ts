@@ -1,11 +1,9 @@
 import { beforeAll, expect, it } from 'vitest'
 import {
-  anthropic,
   anthropicVertex,
   getImageAsBase64,
   IAnthropicVertex,
 } from '../anthropic'
-import { AnthropicVertex } from '@anthropic-ai/vertex-sdk'
 
 let client: IAnthropicVertex
 beforeAll(() => {
