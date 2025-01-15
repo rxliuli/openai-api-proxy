@@ -43,6 +43,7 @@ export function openaiBase(options: {
       'gpt-4o-mini-2024-07-18',
       'o1-preview',
       'o1-mini',
+      'o1'
     ],
     requiredEnv: ['OPENAI_API_KEY'],
     invoke(req) {
@@ -56,13 +57,10 @@ export function openaiBase(options: {
     async *stream(req, signal) {
       const _req = pre(req)
       const client = options.createClient(_req)
-      const stream = await client.chat.completions.create({
+      return client.chat.completions.create({
         ..._req,
-        stream: true,
+        stream: false,
       })
-      for await (const it of stream) {
-        yield it
-      }
     },
   }
 }
