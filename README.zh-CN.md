@@ -18,7 +18,7 @@
 - [x] Azure OpenAI
 - [x] Cohere
 - [x] Aliyun Bailian
-- [ ] Ollama
+- [x] Ollama
 - [ ] Cloudflare Workers AI
 - [ ] Coze
 - [ ] 豆包
@@ -63,6 +63,9 @@
 - Aliyun Bailian: 支持阿里云百炼模型，例如 `qwen-max`
   - `ALIYUN_BAILIAN_API_KEY`: 阿里云百炼 API Key
   - `ALIYUN_BAILIAN_MODELS`: 自定义支持的阿里云百炼模型列表，例如 `qwen-max,qwen-7b-chat`，默认为 `qwen-max`
+- Ollama: 支持 Ollama 模型，例如 `deepseek-r1`
+  - `OLLAMA_BASE_URL`: Ollama Base URL, 例如 `http://localhost:11434/v1`
+  - `OLLAMA_MODELS`: Ollama Models, 例如 `deepseek-r1,lama3.3:70b,phi4:latest`
 
 ## 使用
 
