@@ -1,0 +1,32 @@
+{
+  "name": "openai-api-proxy",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.ts",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.27.3",
+    "@anthropic-ai/vertex-sdk": "^0.4.1",
+    "@azure/identity": "^4.4.1",
+    "@google/generative-ai": "^0.20.0",
+    "cohere-ai": "^7.14.0",
+    "hono": "^4.6.3",
+    "jose": "^5.9.3",
+    "lodash-es": "^4.17.21",
+    "openai": "^4.65.0",
+    "serialize-error": "^11.0.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240925.0",
+    "@langchain/anthropic": "^0.3.3",
+    "@types/lodash-es": "^4.17.12",
+    "google-auth-library": "^9.14.1",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.1",
+    "wrangler": "^3.78.12",
+    "zx": "^8.1.8"
+  }
+}
