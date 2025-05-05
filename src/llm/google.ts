@@ -1,7 +1,7 @@
-import { IChat } from './base'
-import { GoogleGenerativeAI } from '@google/generative-ai'
-import GoogleAI from '@google/generative-ai'
+import {IChat} from './base'
+import GoogleAI, {FunctionDeclarationsTool, GoogleGenerativeAI} from '@google/generative-ai'
 import OpenAI from 'openai'
+import {toString} from "lodash-es";
 
 export function google(env: Record<string, string>): IChat {
   function createClient(req: OpenAI.ChatCompletionCreateParams) {
@@ -46,20 +46,23 @@ export function google(env: Record<string, string>): IChat {
             parts: [{ text: m.content }],
           } as GoogleAI.Content),
       ),
-      tools: req.tools?.map(
-        (tool) =>
-          ({
-            name: tool.function.name,
-            description: tool.function.description,
-            parameters: tool.function.parameters,
-          } as GoogleAI.Tool),
-      ),
+      tools: [{
+        functionDeclarations: req.tools?.map(
+            (tool) =>
+                ({
+                  name: tool.function.name,
+                  description: tool.function.description,
+                  parameters: tool.function.parameters,
+                } as GoogleAI.Tool),
+        )
+      } as FunctionDeclarationsTool],
     }
   }
   function parseResponse(
     response: GoogleAI.EnhancedGenerateContentResponse,
     req: OpenAI.ChatCompletionCreateParams,
   ): OpenAI.ChatCompletion {
+    let index = 0
     return {
       id: 'chatcmpl-' + crypto.randomUUID(),
       object: 'chat.completion',
@@ -72,6 +75,18 @@ export function google(env: Record<string, string>): IChat {
             role: 'assistant',
             content: response.text(),
             refusal: null,
+            tool_calls: response.functionCalls()?.map(
+                (it) => (
+                    {
+                      id: toString(index++),
+                      function: {
+                        arguments: it.args as any,
+                        name: it.name,
+                      } as OpenAI.ChatCompletionMessageToolCall.Function,
+                      type: 'function',
+                    }
+                ) as OpenAI.ChatCompletionMessageToolCall
+            )
           },
           logprobs: null,
           finish_reason: 'stop',
