@@ -16,7 +16,7 @@ Supported models
 - [x] Azure OpenAI
 - [x] Cohere
 - [x] Aliyun Bailian
-- [ ] Ollama
+- [x] Ollama
 - [ ] Cloudflare Workers AI
 - [ ] Coze
 
@@ -56,6 +56,9 @@ Environment variables
 - Aliyun Bailian: Supports Aliyun Bailian models, e.g. `qwen-max`
   - `ALIYUN_BAILIAN_API_KEY`: Aliyun Bailian API Key
   - `ALIYUN_BAILIAN_MODELS`: Custom supported Aliyun Bailian models, e.g. `qwen-max,qwen-7b-chat`, default to `qwen-max`
+- Ollama:
+  - `OLLAMA_BASE_URL`: Ollama Base URL, e.g. `http://localhost:11434/v1`
+  - `OLLAMA_MODELS`: Ollama Models, e.g. `deepseek-r1,lama3.3:70b,phi4:latest`
 
 ## Usage
 

@@ -294,6 +294,7 @@ export function anthropicVertex(env: Record<string, string>): IAnthropicVertex {
     'VERTEX_ANTROPIC_PROJECTID',
   ]
   r.supportModels = [
+    'claude-3-7-sonnet@20250219',
     'claude-3-5-sonnet-v2@20241022',
     'claude-3-5-haiku@20241022',
     'claude-3-5-sonnet@20240620',
@@ -310,6 +311,7 @@ export function anthropic(env: Record<string, string>): IAnthropicVertex {
   r.name = 'anthropic'
   r.requiredEnv = ['ANTROPIC_API_KEY']
   r.supportModels = [
+    'claude-3-7-sonnet-20250219',
     'claude-3-5-sonnet-20241022',
     'claude-3-5-haiku-20241022',
     'claude-3-5-sonnet-20240620',
