@@ -37,16 +37,12 @@ export function google(env: Record<string, string>): IChat {
         ? system
         : system.map((s) => s.text).join('')
     }
-    return {
-      systemInstruction: systemInstruction(),
-      contents: req.messages.map(
-        (m) =>
-          ({
-            role: m.role,
-            parts: [{ text: m.content }],
-          } as GoogleAI.Content),
-      ),
-      tools: [{
+
+    const tools = () => {
+      if (!req.tools) {
+        return undefined;
+      }
+      return [{
         functionDeclarations: req.tools?.map(
             (tool) =>
                 ({
@@ -55,7 +51,19 @@ export function google(env: Record<string, string>): IChat {
                   parameters: tool.function.parameters,
                 } as GoogleAI.Tool),
         )
-      } as FunctionDeclarationsTool],
+      } as FunctionDeclarationsTool]
+    }
+
+    return {
+      systemInstruction: systemInstruction(),
+      contents: req.messages.map(
+        (m) =>
+          ({
+            role: m.role === 'assistant' ? 'model' : 'user',
+            parts: [{ text: m.content }],
+          } as GoogleAI.Content),
+      ),
+      tools: tools(),
     }
   }
   function parseResponse(
@@ -140,6 +148,7 @@ export function google(env: Record<string, string>): IChat {
               index: 0,
               delta: {
                 content: chunk.text(),
+                tool_calls: chunk.functionCalls(),
               },
               finish_reason: null,
             },
