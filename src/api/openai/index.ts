@@ -4,9 +4,13 @@ import OpenAI from "openai";
 import {getModels} from "../common";
 import {streamSSE} from "hono/streaming";
 
-export function openAiRouter(app: Hono<{
+export function openAiRouter(): Hono<{
     Bindings: Bindings
-}>) {
+}> {
+
+    const app = new Hono<{
+        Bindings: Bindings;
+    }>();
 
     app.options('/chat/completions', async (c) => {
         return c.json({body: 'ok'})
@@ -22,16 +26,18 @@ export function openAiRouter(app: Hono<{
         })
         .post('/chat/completions', completions)
         .get('/models', models);
+
+    return app;
 }
 
-async function completions(c: Context<{Bindings: Bindings}>) {
+async function completions(c: Context<{ Bindings: Bindings }>) {
     const req = (await c.req.json()) as
         | OpenAI.ChatCompletionCreateParamsNonStreaming
         | OpenAI.ChatCompletionCreateParamsStreaming
     const list = getModels(c.env as any)
     const llm = list.find((it) => it.supportModels.includes(req.model))
     if (!llm) {
-        return c.json({ error: `Model ${req.model} not supported` }, 400)
+        return c.json({error: `Model ${req.model} not supported`}, 400)
     }
     // console.log(req, llm.name)
     if (req.stream) {
@@ -39,7 +45,7 @@ async function completions(c: Context<{Bindings: Bindings}>) {
         return streamSSE(c, async (stream) => {
             stream.onAbort(() => abortController.abort())
             for await (const it of llm.stream(req, abortController.signal)) {
-                stream.writeSSE({ data: JSON.stringify(it) })
+                stream.writeSSE({data: JSON.stringify(it)})
             }
         })
     }
@@ -47,7 +53,7 @@ async function completions(c: Context<{Bindings: Bindings}>) {
 }
 
 
-async function models(c: Context<{Bindings: Bindings}>) {
+async function models(c: Context<{ Bindings: Bindings }>) {
     return c.json({
         object: 'list',
         data: getModels(c.env as any).flatMap((it) =>

@@ -37,6 +37,45 @@ it('google', async () => {
   })
 })
 
+
+it('google chat with function', async () => {
+  const [r1] = await Promise.all([
+    llm.invoke({
+      model: 'gemini-2.0-flash',
+      messages: [{role: 'user', content: 'Hello!'}, {
+        role: 'assistant',
+        content: 'hello！can I help you?'
+      }, {role: 'user', content: 'What is the weather today in Paris? need celsius'}],
+      temperature: 0,
+      tools: [{
+        "type": "function",
+        "function": {
+          "name": "get_current_weather",
+          "description": "Get the current weather for a location",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "The location to get the weather for, e.g. San Francisco, CA"
+              },
+              "format": {
+                "type": "string",
+                "description": "The format to return the weather in, e.g. 'celsius' or 'fahrenheit'",
+                "enum": ["celsius", "fahrenheit"]
+              }
+            },
+            "required": ["location", "format"]
+          }
+        }
+      }]
+    })
+  ]);
+
+  // @ts-ignore
+  expect(r1.choices[0].message.tool_calls[0].function.name).eq('get_current_weather')
+})
+
 describe('stream', () => {
   async function streamByUsage(include_usage: boolean) {
     const s1 = await model.generateContentStream('Hello!')

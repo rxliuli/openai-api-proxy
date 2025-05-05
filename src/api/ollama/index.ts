@@ -4,9 +4,10 @@ import OpenAI from "openai";
 import {getModels} from "../common";
 import {streamSSE} from "hono/streaming";
 
-export function ollamaRouter(app: Hono<{
-    Bindings: Bindings
-}>) {
+export function ollamaRouter(): Hono<{ Bindings: Bindings; }> {
+    const app = new Hono<{
+        Bindings: Bindings;
+    }>().basePath("/:apiKey");
 
     app.use("*", async (c, next) => {
         const apiKey = c.req.param('apiKey');
@@ -33,6 +34,7 @@ export function ollamaRouter(app: Hono<{
 
     app.get('/v1/api/tags', models)
 
+    return app;
 }
 
 async function completions(c: Context<{ Bindings: Bindings }>) {
