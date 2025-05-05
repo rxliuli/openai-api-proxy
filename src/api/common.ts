@@ -8,6 +8,8 @@ import {groq} from "../llm/groq";
 import {auzreOpenAI} from "../llm/azure";
 import {cohere} from "../llm/cohere";
 import {bailian} from "../llm/bailian";
+import {ollama} from "../llm/ollama";
+import {grok} from "../llm/grok";
 
 // --- getModels: Lists all REAL, configured backend providers ---
 export function getModels(env: Record<string, string>) {
@@ -23,5 +25,7 @@ export function getModels(env: Record<string, string>) {
         auzreOpenAI(env),
         cohere(env),
         bailian(env),
+        ollama(env),
+        grok(env)
     ].filter((it) => it.requiredEnv.every((it) => it in env))
 }
