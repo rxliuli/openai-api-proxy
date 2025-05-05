@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Provides the same proxy OpenAI API interface for different LLM models, and supports deployment to any Edge Runtime environment.
+Provides the same proxy OpenAI API and Ollama API interface for different LLM models, and supports deployment to any Edge Runtime environment.
 
 Supported models
 
@@ -111,10 +111,34 @@ const response = await openai.chat.completions.create({
 console.log(response)
 ```
 
+And Ollama API interface:
+
+Ollama provides local model serving. Since some clients, similar to certain IntelliJ IDEA integrations, don't support custom headers, the approach of placing the API Key (AK) in the path was adopted. Therefore, within IntelliJ, you can configure the endpoint as `http://localhost:8787/ollama/$API_KEY/v1`
+
+```bash
+curl http://localhost:8787/ollama/$API_KEY/v1/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "gemini-2.0-flash",
+  "stream": true,
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, world!"
+    }
+  ]
+}'
+```
+
 ### OpenAI Compatibility
 
 - [/v1/chat/completions](https://platform.openai.com/docs/api-reference/chat/create)
 - [/v1/models](https://platform.openai.com/docs/api-reference/models)
+
+### Ollama Compatibility
+- [/api/chat](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-a-chat-completion)
+- [/api/tags](https://github.com/ollama/ollama/blob/main/docs/api.md#list-local-models)
+
 
 ### Supported Models
 

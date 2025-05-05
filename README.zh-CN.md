@@ -2,7 +2,7 @@
 
 ## 介绍
 
-为不同的 LLM 模型提供相同的代理 OpenAI API 接口，并且支持部署到任何 Edge Runtime 环境。
+为不同的 LLM 模型提供相同的代理 OpenAI API 接口 和 Ollama API 接口，并且支持部署到任何 Edge Runtime 环境。
 
 支持的模型
 
@@ -118,10 +118,33 @@ const response = await openai.chat.completions.create({
 console.log(response)
 ```
 
+Ollama API的接口:
+
+Ollama为本地模型服务,类似IntelliJ IDEA不支持自定义header,因此采取AK放路径思路.在IntelliJ内可以配置`https://$YOUR_HOST/ollama/$API_KEY/v1`
+
+```bash
+curl http://localhost:8787/ollama/$API_KEY/v1/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{
+  "model": "gemini-2.0-flash",
+  "stream": true,
+  "messages": [
+    {
+      "role": "user",
+      "content": "Hello, world!"
+    }
+  ]
+}'
+```
+
 ### OpenAI 兼容性
 
 - [/v1/chat/completions](https://platform.openai.com/docs/api-reference/chat/create)
 - [/v1/models](https://platform.openai.com/docs/api-reference/models)
+
+### Ollama API 兼容性
+- [/api/chat](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-a-chat-completion)
+- [/api/tags](https://github.com/ollama/ollama/blob/main/docs/api.md#list-local-models)
 
 ### 支持的模型列表
 

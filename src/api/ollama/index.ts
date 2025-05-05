@@ -96,7 +96,7 @@ function convertOpenaiChunkToOllama(req: OpenAI.ChatCompletionChunk) {
 function convertOpenaiToOllama(req: OpenAI.ChatCompletion) {
     return {
         model: req.model,
-        created_at: new Date(req.created).toISOString(),
+        created_at: new Date(req.created * 1000).toISOString(),
         message: {
             role: "assistant",
             content: req.choices[0].message.content,
