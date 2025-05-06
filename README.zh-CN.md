@@ -19,6 +19,7 @@
 - [x] Cohere
 - [x] Aliyun Bailian
 - [x] Ollama
+- [x] Grok
 - [ ] Cloudflare Workers AI
 - [ ] Coze
 - [ ] 豆包
@@ -66,6 +67,8 @@
 - Ollama: 支持 Ollama 模型，例如 `deepseek-r1`
   - `OLLAMA_BASE_URL`: Ollama Base URL, 例如 `http://localhost:11434/v1`
   - `OLLAMA_MODELS`: Ollama Models, 例如 `deepseek-r1,lama3.3:70b,phi4:latest`
+- Grok: 支持 grok3 系列模型, e.g. `grok-3-latest`, `grok-3-mini-latest`
+  - `GROK_API_KEY`: Grok API key
 
 ## 使用
 

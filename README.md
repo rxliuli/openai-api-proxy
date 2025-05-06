@@ -17,6 +17,7 @@ Supported models
 - [x] Cohere
 - [x] Aliyun Bailian
 - [x] Ollama
+- [x] Grok
 - [ ] Cloudflare Workers AI
 - [ ] Coze
 
@@ -59,6 +60,8 @@ Environment variables
 - Ollama:
   - `OLLAMA_BASE_URL`: Ollama Base URL, e.g. `http://localhost:11434/v1`
   - `OLLAMA_MODELS`: Ollama Models, e.g. `deepseek-r1,lama3.3:70b,phi4:latest`
+- Grok: Supports grok3 models, e.g. `grok-3-latest`, `grok-3-mini-latest`
+  - `GROK_API_KEY`: Grok API key
 
 ## Usage
 
