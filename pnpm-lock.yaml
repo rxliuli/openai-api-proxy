@@ -48,12 +48,21 @@ importers:
       '@langchain/anthropic':
         specifier: ^0.3.3
         version: 0.3.3(@langchain/core@0.3.4(openai@4.65.0(zod@3.23.8)))
+      '@liuli-util/prettier-standard-config':
+        specifier: ^0.3.0
+        version: 0.3.0(prettier@3.5.3)
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
       google-auth-library:
         specifier: ^9.14.1
         version: 9.14.1
+      prettier:
+        specifier: ^3.5.3
+        version: 3.5.3
+      simple-git-hooks:
+        specifier: ^2.13.0
+        version: 2.13.0
       vite:
         specifier: ^5.4.8
         version: 5.4.8(@types/node@22.7.4)
@@ -678,6 +687,11 @@ packages:
   '@langchain/core@0.3.4':
     resolution: {integrity: sha512-ULxB0rTCW5+Ej3uO8gg1tep06Nm2rO7KVMwNFF7cVz4OPIEN2eQa25rMTFeja22YINn01msxB1A25y8skMa6TA==}
     engines: {node: '>=18'}
+
+  '@liuli-util/prettier-standard-config@0.3.0':
+    resolution: {integrity: sha512-3cwp9oCh8jy9jbmqdOKHfSkfUbIwNW+7Sr5bX/ziGg5XxtdkUB5tkaqcx+P9/xpQL+oiJUVkZD22gRTVD/K4fg==}
+    peerDependencies:
+      prettier: ^2
 
   '@liuli-util/vite-plugin-node@0.9.0':
     resolution: {integrity: sha512-y3lgFi/51LwKWkAvUO8Ip7I1RRt0X/WI5ALtVwtLCaOrDWKbv7dICctXlc7FiZek5SnNXncU4PU9s6IwZkqQmw==}
@@ -1911,6 +1925,11 @@ packages:
     resolution: {integrity: sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==}
     engines: {node: ^10 || ^12 || >=14}
 
+  prettier@3.5.3:
+    resolution: {integrity: sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==}
+    engines: {node: '>=14'}
+    hasBin: true
+
   printable-characters@1.0.42:
     resolution: {integrity: sha512-dKp+C4iXWK4vVYZmYSd0KBH5F/h1HoZRsbJ82AVKRO3PEo8L4lBS/vLwhVtpwwuYcoIsVY+1JYKR268yn480uQ==}
 
@@ -2010,6 +2029,10 @@ packages:
 
   siginfo@2.0.0:
     resolution: {integrity: sha512-ybx0WO1/8bSBLEWXZvEd7gMW3Sn3JFlW3TvX1nREbDLRNQNaeNN8WK0meBwPdAaOI7TtRRRJn/Es1zhrrCHu7g==}
+
+  simple-git-hooks@2.13.0:
+    resolution: {integrity: sha512-N+goiLxlkHJlyaYEglFypzVNMaNplPAk5syu0+OPp/Bk6dwVoXF6FfOw2vO0Dp+JHsBaI+w6cm8TnFl2Hw6tDA==}
+    hasBin: true
 
   source-map-js@1.2.0:
     resolution: {integrity: sha512-itJW8lvSA0TXEphiRoawsCksnlf8SyvmFzIhltqAHluXd88pkCd+cXJVHTDwdCr0IzwptSm035IHQktUu1QUMg==}
@@ -3187,6 +3210,10 @@ snapshots:
       zod-to-json-schema: 3.23.3(zod@3.23.8)
     transitivePeerDependencies:
       - openai
+
+  '@liuli-util/prettier-standard-config@0.3.0(prettier@3.5.3)':
+    dependencies:
+      prettier: 3.5.3
 
   '@liuli-util/vite-plugin-node@0.9.0(@types/node@22.5.0)(rollup@4.21.0)(typescript@5.1.6)(vite@5.4.2(@types/node@22.5.0))':
     dependencies:
@@ -4623,6 +4650,8 @@ snapshots:
       picocolors: 1.1.0
       source-map-js: 1.2.1
 
+  prettier@3.5.3: {}
+
   printable-characters@1.0.42: {}
 
   process@0.11.10: {}
@@ -4758,6 +4787,8 @@ snapshots:
       object-inspect: 1.13.2
 
   siginfo@2.0.0: {}
+
+  simple-git-hooks@2.13.0: {}
 
   source-map-js@1.2.0: {}
 
