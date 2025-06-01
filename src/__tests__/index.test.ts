@@ -11,10 +11,8 @@ const MOCK_ENV = {
   API_KEY: import.meta.env.VITE_API_KEY,
 
   OPENAI_API_KEY: import.meta.env.VITE_OPENAI_API_KEY,
-  VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL: import.meta.env
-    .VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL,
-  VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY: import.meta.env
-    .VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY,
+  VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL,
+  VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY,
   VERTEX_ANTROPIC_REGION: import.meta.env.VITE_VERTEX_ANTROPIC_REGION,
   VERTEX_ANTROPIC_PROJECTID: import.meta.env.VITE_VERTEX_ANTROPIC_PROJECTID,
   ANTROPIC_API_KEY: import.meta.env.VITE_ANTROPIC_API_KEY,
@@ -25,11 +23,7 @@ beforeAll(() => {
   mock = new OpenAI({
     apiKey: import.meta.env.VITE_API_KEY,
     fetch: async (_url, init) => {
-      return app.request(
-        '/v1/chat/completions',
-        { method: 'POST', ...init },
-        MOCK_ENV,
-      )
+      return app.request('/v1/chat/completions', { method: 'POST', ...init }, MOCK_ENV)
     },
   })
 })
@@ -50,10 +44,7 @@ describe('invoke', () => {
       })
     })
     it('call openai invoke function', async () => {
-      const [r1, r2] = await Promise.all([
-        invokeOpenAI(origin, 'gpt-4o-mini'),
-        invokeOpenAI(mock, 'gpt-4o-mini'),
-      ])
+      const [r1, r2] = await Promise.all([invokeOpenAI(origin, 'gpt-4o-mini'), invokeOpenAI(mock, 'gpt-4o-mini')])
       expect(r1).not.undefined
       expect(r2).not.undefined
       expect(omit(r1, 'created', 'id', 'system_fingerprint')).deep.equal(
@@ -73,10 +64,8 @@ describe('invoke', () => {
           scopes: ['https://www.googleapis.com/auth/cloud-platform'],
           credentials: {
             type: 'service_account',
-            client_email: import.meta.env
-              .VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL,
-            private_key: import.meta.env
-              .VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY,
+            client_email: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL,
+            private_key: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY,
           },
         }),
       })
@@ -95,9 +84,7 @@ describe('invoke', () => {
       expect(r2).not.undefined
       // console.log('r1: ', r1)
       // console.log('r2: ', r2)
-      expect((r1.content[0] as TextBlock).text).equal(
-        r2.choices[0].message.content,
-      )
+      expect((r1.content[0] as TextBlock).text).equal(r2.choices[0].message.content)
       expect(r1.model).equal(r2.model)
       expect({
         prompt_tokens: r1.usage.input_tokens,
@@ -138,13 +125,9 @@ describe('stream', () => {
       })
     })
     it('call openai stream function', async () => {
-      const [r1, r2] = await Promise.all([
-        streamOpenAI(origin, 'gpt-4o-mini'),
-        streamOpenAI(mock, 'gpt-4o-mini'),
-      ])
+      const [r1, r2] = await Promise.all([streamOpenAI(origin, 'gpt-4o-mini'), streamOpenAI(mock, 'gpt-4o-mini')])
       // console.log(JSON.stringify(r1, null, 2))
-      const f = (it: OpenAI.Chat.Completions.ChatCompletionChunk) =>
-        omit(it, 'created', 'id', 'system_fingerprint')
+      const f = (it: OpenAI.Chat.Completions.ChatCompletionChunk) => omit(it, 'created', 'id', 'system_fingerprint')
       // console.log(JSON.stringify(r2, null, 2))
       expect(r1.map(f)).deep.equal(r2.map(f))
     })
@@ -161,10 +144,8 @@ describe('stream', () => {
           scopes: ['https://www.googleapis.com/auth/cloud-platform'],
           credentials: {
             type: 'service_account',
-            client_email: import.meta.env
-              .VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL,
-            private_key: import.meta.env
-              .VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY,
+            client_email: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL,
+            private_key: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY,
           },
         }),
       })
@@ -183,9 +164,7 @@ describe('stream', () => {
       ])
       const message = await r1.finalMessage()
       const usage = r2.find((it) => it.usage)!.usage!
-      const content = r2
-        .map((it) => it.choices[0]?.delta.content ?? '')
-        .join('')
+      const content = r2.map((it) => it.choices[0]?.delta.content ?? '').join('')
       expect((message.content[0] as TextBlock).text).equal(content)
       expect(usage.prompt_tokens).equal(message.usage.input_tokens)
       expect(usage.completion_tokens).equal(message.usage.output_tokens)

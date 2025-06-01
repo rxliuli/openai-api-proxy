@@ -10,10 +10,7 @@ export interface IChat {
   supportModels: string[]
   requiredEnv: string[]
   invoke(req: ChatCompletionCreateParamsNonStreaming): Promise<ChatCompletion>
-  stream(
-    req: ChatCompletionCreateParamsStreaming,
-    signal: AbortSignal,
-  ): AsyncGenerator<ChatCompletionChunk>
+  stream(req: ChatCompletionCreateParamsStreaming, signal: AbortSignal): AsyncGenerator<ChatCompletionChunk>
 }
 
 export interface ChatEnv {

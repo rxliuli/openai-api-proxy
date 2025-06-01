@@ -61,10 +61,8 @@ it('Call Anthropic Vertex on nodejs', async () => {
     projectId: import.meta.env.VITE_VERTEX_ANTROPIC_PROJECTID,
     googleAuth: new GoogleAuth({
       credentials: {
-        client_email: import.meta.env
-          .VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL!,
-        private_key: import.meta.env
-          .VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY!,
+        client_email: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL!,
+        private_key: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY!,
       },
       scopes: ['https://www.googleapis.com/auth/cloud-platform'],
     }),

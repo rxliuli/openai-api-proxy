@@ -28,15 +28,7 @@ it('should call anthropic vertex', async () => {
   console.log(response)
 })
 
-function buildUrl({
-  region,
-  projectId,
-  model,
-}: {
-  region: string
-  projectId: string
-  model: string
-}) {
+function buildUrl({ region, projectId, model }: { region: string; projectId: string; model: string }) {
   return `https://${region}-aiplatform.googleapis.com/v1/projects/${projectId}/locations/${region}/publishers/anthropic/models/${model}:streamRawPredict`
 }
 

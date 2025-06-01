@@ -4,9 +4,9 @@ import { openaiBase } from './openai'
 
 export function ollama(env: Record<string, string>): IChat {
   const client = new OpenAI({
-    apiKey: "openai-api-proxy",
+    apiKey: 'openai-api-proxy',
     baseURL: env.OLLAMA_BASE_URL,
-  });
+  })
   const r = openaiBase({
     createClient: () => client,
     pre: (req) => ({

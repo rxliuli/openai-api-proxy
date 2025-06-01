@@ -12,9 +12,7 @@ export function bailian(env: Record<string, string | undefined>): IChat {
     },
   })
   r.name = 'Bailian'
-  r.supportModels = env.ALIYUN_BAILIAN_MODELS?.split(',').map((it) =>
-    it.trim(),
-  ) ?? ['qwen-max']
+  r.supportModels = env.ALIYUN_BAILIAN_MODELS?.split(',').map((it) => it.trim()) ?? ['qwen-max']
   r.requiredEnv = ['ALIYUN_BAILIAN_API_KEY']
   return r
 }

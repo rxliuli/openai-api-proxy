@@ -63,18 +63,14 @@ export class AnthropicVertexWeb extends Core.APIClient {
     return this._options.defaultQuery
   }
 
-  protected override defaultHeaders(
-    opts: Core.FinalRequestOptions,
-  ): Core.Headers {
+  protected override defaultHeaders(opts: Core.FinalRequestOptions): Core.Headers {
     return {
       ...super.defaultHeaders(opts),
       ...this._options.defaultHeaders,
     }
   }
 
-  protected override async prepareOptions(
-    options: Core.FinalRequestOptions,
-  ): Promise<void> {
+  protected override async prepareOptions(options: Core.FinalRequestOptions): Promise<void> {
     if (!this.accessToken) {
       if (!this._options.clientEmail || !this._options.privateKey) {
         throw new Error(
@@ -115,9 +111,7 @@ export class AnthropicVertexWeb extends Core.APIClient {
       }
 
       if (!Core.isObj(options.body)) {
-        throw new Error(
-          'Expected request body to be an object for post /v1/messages',
-        )
+        throw new Error('Expected request body to be an object for post /v1/messages')
       }
 
       const model = options.body['model']

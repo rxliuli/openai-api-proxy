@@ -3,9 +3,7 @@ import { ChatEnv, IChat } from './base'
 import { Cohere, CohereClient } from 'cohere-ai'
 import OpenAI from 'openai'
 
-function roleOpenaiToCohere(
-  role: OpenAI.Chat.Completions.ChatCompletionMessageParam['role'],
-): Cohere.Message['role'] {
+function roleOpenaiToCohere(role: OpenAI.Chat.Completions.ChatCompletionMessageParam['role']): Cohere.Message['role'] {
   switch (role) {
     case 'user':
       return 'USER'
@@ -49,9 +47,7 @@ export function cohere(env: ChatEnv): IChat {
       token: env.COHERE_API_KEY,
     })
 
-  function parseRequest(
-    req: OpenAI.ChatCompletionCreateParams,
-  ): Cohere.ChatRequest {
+  function parseRequest(req: OpenAI.ChatCompletionCreateParams): Cohere.ChatRequest {
     return {
       model: req.model,
       chatHistory: req.messages.slice(0, -1).map(
@@ -59,7 +55,7 @@ export function cohere(env: ChatEnv): IChat {
           ({
             role: roleOpenaiToCohere(it.role),
             message: it.content as string,
-          } satisfies Cohere.Message),
+          }) satisfies Cohere.Message,
       ),
       message: last(req.messages)?.content as string,
       temperature: req.temperature!,
@@ -89,14 +85,11 @@ export function cohere(env: ChatEnv): IChat {
         },
       ],
       usage:
-        resp.meta?.billedUnits?.inputTokens &&
-        resp.meta?.billedUnits?.outputTokens
+        resp.meta?.billedUnits?.inputTokens && resp.meta?.billedUnits?.outputTokens
           ? {
               prompt_tokens: resp.meta.billedUnits.inputTokens,
               completion_tokens: resp.meta.billedUnits.outputTokens,
-              total_tokens:
-                resp.meta.billedUnits.inputTokens +
-                resp.meta.billedUnits.outputTokens,
+              total_tokens: resp.meta.billedUnits.inputTokens + resp.meta.billedUnits.outputTokens,
             }
           : undefined,
     }
@@ -132,15 +125,13 @@ export function cohere(env: ChatEnv): IChat {
           model: req.model,
           object: 'chat.completion.chunk',
           created: Math.floor(Date.now() / 1000),
-        } as const)
+        }) as const
       for await (const chunk of stream) {
         if (chunk.eventType === 'stream-start') {
           id = chunk.generationId
           yield {
             ...fileds(),
-            choices: [
-              { delta: { content: '' }, index: 0, finish_reason: null },
-            ],
+            choices: [{ delta: { content: '' }, index: 0, finish_reason: null }],
           } satisfies OpenAI.ChatCompletionChunk
         } else if (chunk.eventType === 'text-generation') {
           yield {
@@ -154,10 +145,7 @@ export function cohere(env: ChatEnv): IChat {
             ],
           } satisfies OpenAI.ChatCompletionChunk
         } else if (chunk.eventType === 'stream-end') {
-          if (
-            !chunk.response.meta?.billedUnits?.inputTokens ||
-            !chunk.response.meta?.billedUnits?.outputTokens
-          ) {
+          if (!chunk.response.meta?.billedUnits?.inputTokens || !chunk.response.meta?.billedUnits?.outputTokens) {
             throw new Error('Billed units not found')
           }
           yield {
@@ -172,9 +160,7 @@ export function cohere(env: ChatEnv): IChat {
             usage: {
               prompt_tokens: chunk.response.meta.billedUnits.inputTokens,
               completion_tokens: chunk.response.meta.billedUnits.outputTokens,
-              total_tokens:
-                chunk.response.meta.billedUnits.inputTokens +
-                chunk.response.meta.billedUnits.outputTokens,
+              total_tokens: chunk.response.meta.billedUnits.inputTokens + chunk.response.meta.billedUnits.outputTokens,
             },
           } satisfies OpenAI.ChatCompletionChunk
         }

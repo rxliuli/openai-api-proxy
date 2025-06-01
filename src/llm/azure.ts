@@ -20,12 +20,7 @@ export function auzreOpenAI(env: Record<string, string>) {
     }),
   })
   r.name = 'azure-openai'
-  r.requiredEnv = [
-    'AZURE_OPENAI_API_KEY',
-    'AZURE_OPENAI_ENDPOINT',
-    'AZURE_API_VERSION',
-    'AZURE_DEPLOYMENT_MODELS',
-  ]
+  r.requiredEnv = ['AZURE_OPENAI_API_KEY', 'AZURE_OPENAI_ENDPOINT', 'AZURE_API_VERSION', 'AZURE_DEPLOYMENT_MODELS']
   r.supportModels = (env.AZURE_DEPLOYMENT_MODELS ?? '').split(',').map((it) => {
     if (it.includes(':')) {
       const [model, deployment] = it.split(':')

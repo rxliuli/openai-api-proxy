@@ -12,10 +12,7 @@ type TokenWithExpiration = Token & {
 
 let token: TokenWithExpiration | null = null
 
-async function createToken(options: {
-  clientEmail: string
-  privateKey: string
-}) {
+async function createToken(options: { clientEmail: string; privateKey: string }) {
   const rawPrivateKey = options.privateKey.replace(/\\n/g, '\n')
   const privateKey = await importPKCS8(rawPrivateKey, 'RS256')
 
@@ -41,14 +38,11 @@ async function createToken(options: {
   }
 
   // Make the token request
-  const tokenResponse = await fetch(
-    'https://www.googleapis.com/oauth2/v4/token',
-    {
-      method: 'POST',
-      body: JSON.stringify(form),
-      headers: { 'Content-Type': 'application/json' },
-    },
-  )
+  const tokenResponse = await fetch('https://www.googleapis.com/oauth2/v4/token', {
+    method: 'POST',
+    body: JSON.stringify(form),
+    headers: { 'Content-Type': 'application/json' },
+  })
 
   const json = (await tokenResponse.json()) as Token
 
@@ -58,10 +52,7 @@ async function createToken(options: {
   }
 }
 
-export async function authenticate(options: {
-  clientEmail: string
-  privateKey: string
-}): Promise<Token> {
+export async function authenticate(options: { clientEmail: string; privateKey: string }): Promise<Token> {
   if (!options.clientEmail || !options.privateKey) {
     throw new Error('clientEmail and privateKey are required')
   }
