@@ -17,9 +17,10 @@ Supported models
 - [x] Cohere
 - [x] Aliyun Bailian
 - [x] Ollama
+- [x] Grok
+- [x] OpenRouter
 - [ ] Cloudflare Workers AI
 - [ ] Coze
-- [x] OpenRouter
 
 ## Deployment
 
@@ -63,6 +64,8 @@ Environment variables
 - OpenRouter: Supports OpenRouter models, e.g. `openai/gpt-4o-mini`
   - `OPENROUTER_API_KEY`: OpenRouter API Key
   - `OPENROUTER_MODELS`: OpenRouter Models, e.g. `openai/gpt-4o-mini,anthropic/claude-3-5-sonnet-20240620`
+- Grok: Supports grok3 models, e.g. `grok-3-latest`, `grok-3-mini-latest`
+  - `GROK_API_KEY`: Grok API key
 
 ## Usage
 

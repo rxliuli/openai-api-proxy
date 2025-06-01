@@ -19,10 +19,11 @@
 - [x] Cohere
 - [x] Aliyun Bailian
 - [x] Ollama
+- [x] Grok
+- [x] OpenRouter
 - [ ] Cloudflare Workers AI
 - [ ] Coze
 - [ ] 豆包
-- [x] OpenRouter
 
 ## 部署
 
@@ -70,6 +71,8 @@
 - OpenRouter: 支持 OpenRouter 模型，例如 `openai/gpt-4o-mini`
   - `OPENROUTER_API_KEY`: OpenRouter API Key
   - `OPENROUTER_MODELS`: OpenRouter Models, 例如 `openai/gpt-4o-mini,anthropic/claude-3-5-sonnet-20240620`
+- Grok: 支持 grok3 系列模型, e.g. `grok-3-latest`, `grok-3-mini-latest`
+  - `GROK_API_KEY`: Grok API key
 
 ## 使用
 
