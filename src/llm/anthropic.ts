@@ -6,9 +6,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { HTTPException } from 'hono/http-exception'
 
 export interface IAnthropicVertex extends IChat {
-  parseRequest(
-    req: OpenAI.ChatCompletionCreateParams,
-  ): Promise<AnthropicTypes.MessageCreateParams>
+  parseRequest(req: OpenAI.ChatCompletionCreateParams): Promise<AnthropicTypes.MessageCreateParams>
   parseResponse(resp: AnthropicTypes.Messages.Message): OpenAI.ChatCompletion
 }
 
@@ -124,22 +122,12 @@ export function anthropicBase(
     async parseRequest(req) {
       let r: AnthropicTypes.MessageCreateParamsNonStreaming = {
         stream: false,
-        stop_sequences:
-          typeof req.stop === 'string'
-            ? [req.stop]
-            : Array.isArray(req.stop)
-            ? req.stop
-            : undefined,
+        stop_sequences: typeof req.stop === 'string' ? [req.stop] : Array.isArray(req.stop) ? req.stop : undefined,
         system: req.messages.find((it) => it.role === 'system')?.content,
         model: req.model,
         messages: await convertMessages(
           req.messages.filter((it) =>
-            (
-              [
-                'user',
-                'assistant',
-              ] as OpenAI.ChatCompletionMessageParam['role'][]
-            ).includes(it.role),
+            (['user', 'assistant'] as OpenAI.ChatCompletionMessageParam['role'][]).includes(it.role),
           ),
         ),
         max_tokens: req.max_tokens ?? getModelMaxTokens(req.model),
@@ -153,7 +141,7 @@ export function anthropicBase(
               name: it.function.name,
               description: it.function.description,
               input_schema: it.function.parameters,
-            } as AnthropicTypes.Tool),
+            }) as AnthropicTypes.Tool,
         ),
         tool_choice: convertToolChoice(req.tool_choice),
       }
@@ -176,7 +164,7 @@ export function anthropicBase(
           completion_tokens: resp.usage.output_tokens,
           total_tokens: resp.usage.input_tokens + resp.usage.output_tokens,
         },
-        choices: resp.content.map((it) => {
+        choices: resp.content.map((it: AnthropicTypes.ContentBlock) => {
           return {
             index: 0,
             message: {
@@ -206,11 +194,7 @@ export function anthropicBase(
     async invoke(req) {
       const client = createClient()
       return this.parseResponse(
-        await client.messages.create(
-          (await this.parseRequest(
-            req,
-          )) as AnthropicTypes.MessageCreateParamsNonStreaming,
-        ),
+        await client.messages.create((await this.parseRequest(req)) as AnthropicTypes.MessageCreateParamsNonStreaming),
       )
     },
     async *stream(req, signal) {
@@ -255,8 +239,7 @@ export function anthropicBase(
               usage: {
                 prompt_tokens: start!.usage.input_tokens,
                 completion_tokens: it!.usage.output_tokens,
-                total_tokens:
-                  start!.usage.input_tokens + it!.usage.output_tokens,
+                total_tokens: start!.usage.input_tokens + it!.usage.output_tokens,
               },
             } as OpenAI.ChatCompletionChunk
           } else {
@@ -294,6 +277,8 @@ export function anthropicVertex(env: Record<string, string>): IAnthropicVertex {
     'VERTEX_ANTROPIC_PROJECTID',
   ]
   r.supportModels = [
+    'claude-opus-4@20250514',
+    'claude-sonnet-4@20250514',
     'claude-3-7-sonnet@20250219',
     'claude-3-5-sonnet-v2@20241022',
     'claude-3-5-haiku@20241022',
@@ -311,6 +296,8 @@ export function anthropic(env: Record<string, string>): IAnthropicVertex {
   r.name = 'anthropic'
   r.requiredEnv = ['ANTROPIC_API_KEY']
   r.supportModels = [
+    'claude-opus-4-20250514',
+    'claude-sonnet-4-20250514',
     'claude-3-7-sonnet-20250219',
     'claude-3-5-sonnet-20241022',
     'claude-3-5-haiku-20241022',
