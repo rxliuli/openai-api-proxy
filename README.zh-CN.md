@@ -22,6 +22,7 @@
 - [ ] Cloudflare Workers AI
 - [ ] Coze
 - [ ] 豆包
+- [x] OpenRouter
 
 ## 部署
 
@@ -66,6 +67,9 @@
 - Ollama: 支持 Ollama 模型，例如 `deepseek-r1`
   - `OLLAMA_BASE_URL`: Ollama Base URL, 例如 `http://localhost:11434/v1`
   - `OLLAMA_MODELS`: Ollama Models, 例如 `deepseek-r1,lama3.3:70b,phi4:latest`
+- OpenRouter: 支持 OpenRouter 模型，例如 `openai/gpt-4o-mini`
+  - `OPENROUTER_API_KEY`: OpenRouter API Key
+  - `OPENROUTER_MODELS`: OpenRouter Models, 例如 `openai/gpt-4o-mini,anthropic/claude-3-5-sonnet-20240620`
 
 ## 使用
 
@@ -146,6 +150,7 @@ curl http://localhost:8787/ollama/$API_KEY/v1/api/chat \
 - [/v1/models](https://platform.openai.com/docs/api-reference/models)
 
 ### Ollama API 兼容性
+
 - [/api/chat](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-a-chat-completion)
 - [/api/tags](https://github.com/ollama/ollama/blob/main/docs/api.md#list-local-models)
 

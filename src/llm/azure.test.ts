@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { auzreOpenAI } from '../azure'
+import { auzreOpenAI } from './azure'
 
 it('azure', async () => {
   const llm = auzreOpenAI({

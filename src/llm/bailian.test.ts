@@ -1,7 +1,7 @@
 import { beforeEach, expect, it } from 'vitest'
-import { bailian } from '../bailian'
+import { bailian } from './bailian'
 import OpenAI from 'openai'
-import { IChat } from '../base'
+import { IChat } from './base'
 import { last } from 'lodash-es'
 
 let client: IChat

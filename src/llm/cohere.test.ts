@@ -1,6 +1,6 @@
 import { beforeEach, it, expect } from 'vitest'
-import { IChat } from '../base'
-import { cohere } from '../cohere'
+import { IChat } from './base'
+import { cohere } from './cohere'
 import OpenAI from 'openai'
 import { last } from 'lodash-es'
 

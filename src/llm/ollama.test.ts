@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { ollama } from '../ollama'
+import { ollama } from './ollama'
 
 it('ollama', async () => {
   const client = ollama({

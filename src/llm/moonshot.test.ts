@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { moonshot } from '../moonshot'
+import { moonshot } from './moonshot'
 
 it('moonshot', async () => {
   const client = moonshot({

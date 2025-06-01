@@ -1,16 +1,14 @@
 import { beforeAll, describe, expect, it } from 'vitest'
-import { google } from '../google'
+import { google } from './google'
 import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai'
-import { IChat } from '../base'
+import { IChat } from './base'
 import OpenAI from 'openai'
 import { last } from 'lodash-es'
 
 let llm: IChat
 let model: GenerativeModel
 beforeAll(() => {
-  const genAI = new GoogleGenerativeAI(
-    import.meta.env.VITE_GOOGLE_GEN_AI_API_KEY,
-  )
+  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_GEN_AI_API_KEY)
   model = genAI.getGenerativeModel({
     model: 'gemini-1.5-flash',
     generationConfig: { temperature: 0! },
@@ -37,40 +35,45 @@ it('google', async () => {
   })
 })
 
-
 it('google chat with function', async () => {
   const [r1] = await Promise.all([
     llm.invoke({
       model: 'gemini-2.0-flash',
-      messages: [{role: 'user', content: 'Hello!'}, {
-        role: 'assistant',
-        content: 'hello！can I help you?'
-      }, {role: 'user', content: 'What is the weather today in Paris? need celsius'}],
+      messages: [
+        { role: 'user', content: 'Hello!' },
+        {
+          role: 'assistant',
+          content: 'hello！can I help you?',
+        },
+        { role: 'user', content: 'What is the weather today in Paris? need celsius' },
+      ],
       temperature: 0,
-      tools: [{
-        "type": "function",
-        "function": {
-          "name": "get_current_weather",
-          "description": "Get the current weather for a location",
-          "parameters": {
-            "type": "object",
-            "properties": {
-              "location": {
-                "type": "string",
-                "description": "The location to get the weather for, e.g. San Francisco, CA"
+      tools: [
+        {
+          type: 'function',
+          function: {
+            name: 'get_current_weather',
+            description: 'Get the current weather for a location',
+            parameters: {
+              type: 'object',
+              properties: {
+                location: {
+                  type: 'string',
+                  description: 'The location to get the weather for, e.g. San Francisco, CA',
+                },
+                format: {
+                  type: 'string',
+                  description: "The format to return the weather in, e.g. 'celsius' or 'fahrenheit'",
+                  enum: ['celsius', 'fahrenheit'],
+                },
               },
-              "format": {
-                "type": "string",
-                "description": "The format to return the weather in, e.g. 'celsius' or 'fahrenheit'",
-                "enum": ["celsius", "fahrenheit"]
-              }
+              required: ['location', 'format'],
             },
-            "required": ["location", "format"]
-          }
-        }
-      }]
-    })
-  ]);
+          },
+        },
+      ],
+    }),
+  ])
 
   // @ts-ignore
   expect(r1.choices[0].message.tool_calls[0].function.name).eq('get_current_weather')
@@ -104,18 +107,14 @@ describe('stream', () => {
   it('basic stream', async () => {
     const { r1, r2 } = await streamByUsage(false)
     // console.log(r1, r2)
-    expect(r1.map((it) => it.text()).join('')).eq(
-      r2.map((it) => it.choices[0].delta.content).join(''),
-    )
+    expect(r1.map((it) => it.text()).join('')).eq(r2.map((it) => it.choices[0].delta.content).join(''))
     expect(last(r2)!.usage).undefined
     expect(last(r1)!.usageMetadata).not.undefined
   })
   it('usage stream', async () => {
     const { r1, r2 } = await streamByUsage(true)
     console.log(r1, r2)
-    expect(r1.map((it) => it.text()).join('')).eq(
-      r2.map((it) => it.choices[0]?.delta.content ?? '').join(''),
-    )
+    expect(r1.map((it) => it.text()).join('')).eq(r2.map((it) => it.choices[0]?.delta.content ?? '').join(''))
     expect(r2.length - r1.length).eq(1)
     expect(last(r2)!.usage).deep.eq({
       prompt_tokens: last(r1)!.usageMetadata!.promptTokenCount,

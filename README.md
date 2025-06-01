@@ -19,6 +19,7 @@ Supported models
 - [x] Ollama
 - [ ] Cloudflare Workers AI
 - [ ] Coze
+- [x] OpenRouter
 
 ## Deployment
 
@@ -59,6 +60,9 @@ Environment variables
 - Ollama:
   - `OLLAMA_BASE_URL`: Ollama Base URL, e.g. `http://localhost:11434/v1`
   - `OLLAMA_MODELS`: Ollama Models, e.g. `deepseek-r1,lama3.3:70b,phi4:latest`
+- OpenRouter: Supports OpenRouter models, e.g. `openai/gpt-4o-mini`
+  - `OPENROUTER_API_KEY`: OpenRouter API Key
+  - `OPENROUTER_MODELS`: OpenRouter Models, e.g. `openai/gpt-4o-mini,anthropic/claude-3-5-sonnet-20240620`
 
 ## Usage
 
@@ -139,9 +143,9 @@ curl http://localhost:8787/ollama/$API_KEY/v1/api/chat \
 - [/v1/models](https://platform.openai.com/docs/api-reference/models)
 
 ### Ollama Compatibility
+
 - [/api/chat](https://github.com/ollama/ollama/blob/main/docs/api.md#generate-a-chat-completion)
 - [/api/tags](https://github.com/ollama/ollama/blob/main/docs/api.md#list-local-models)
-
 
 ### Supported Models
 

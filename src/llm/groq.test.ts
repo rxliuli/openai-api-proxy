@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest'
-import { groq } from '../groq'
+import { groq } from './groq'
 
 it('groq', async () => {
   const client = groq({

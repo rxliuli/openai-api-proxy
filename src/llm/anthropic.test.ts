@@ -1,17 +1,11 @@
 import { beforeAll, expect, it } from 'vitest'
-import {
-  anthropicVertex,
-  getImageAsBase64,
-  IAnthropicVertex,
-} from '../anthropic'
+import { anthropicVertex, getImageAsBase64, IAnthropicVertex } from './anthropic'
 
 let client: IAnthropicVertex
 beforeAll(() => {
   client = anthropicVertex({
-    VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL: import.meta.env
-      .VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL,
-    VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY: import.meta.env
-      .VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY,
+    VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_CLIENT_EMAIL,
+    VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY: import.meta.env.VITE_VERTEX_ANTROPIC_GOOGLE_SA_PRIVATE_KEY,
     VERTEX_ANTROPIC_REGION: import.meta.env.VITE_VERTEX_ANTROPIC_REGION,
     VERTEX_ANTROPIC_PROJECTID: import.meta.env.VITE_VERTEX_ANTROPIC_PROJECTID,
   })
