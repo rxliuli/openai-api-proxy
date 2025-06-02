@@ -83,7 +83,7 @@ function openaiResponse(options: { createClient: (req: ChatCompletionCreateParam
       })),
       model: req.model,
       temperature: req.temperature,
-      max_output_tokens: req.max_tokens,
+      max_output_tokens: req.max_completion_tokens,
       top_p: req.top_p,
     } satisfies OpenAI.Responses.ResponseCreateParamsNonStreaming
   }

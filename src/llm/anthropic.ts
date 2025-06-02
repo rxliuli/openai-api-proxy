@@ -130,7 +130,7 @@ export function anthropicBase(
             (['user', 'assistant'] as OpenAI.ChatCompletionMessageParam['role'][]).includes(it.role),
           ),
         ),
-        max_tokens: req.max_tokens ?? getModelMaxTokens(req.model),
+        max_tokens: req.max_completion_tokens ?? getModelMaxTokens(req.model),
         temperature: req.temperature!,
         metadata: {
           user_id: req.user,

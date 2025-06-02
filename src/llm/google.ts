@@ -1,7 +1,8 @@
 import { IChat } from './base'
-import GoogleAI, { FunctionDeclarationsTool, GoogleGenerativeAI } from '@google/generative-ai'
+import GoogleAI, { FileDataPart, FunctionDeclarationsTool, GoogleGenerativeAI, TextPart } from '@google/generative-ai'
 import OpenAI from 'openai'
 import { toString } from 'lodash-es'
+import mime from 'mime/lite'
 
 export function google(env: Record<string, string>): IChat {
   function createClient(req: OpenAI.ChatCompletionCreateParams) {
@@ -13,7 +14,7 @@ export function google(env: Record<string, string>): IChat {
       model: req.model,
       generationConfig: {
         temperature: req.temperature!,
-        maxOutputTokens: req.max_tokens!,
+        maxOutputTokens: req.max_completion_tokens!,
         responseSchema: req.response_format?.type === 'json_schema' ? req.response_format.json_schema : undefined,
         topP: req.top_p!,
       },
@@ -53,7 +54,31 @@ export function google(env: Record<string, string>): IChat {
         (m) =>
           ({
             role: m.role === 'assistant' ? 'model' : 'user',
-            parts: [{ text: m.content }],
+            parts:
+              typeof m.content === 'string'
+                ? [{ text: m.content }]
+                : m.content!.map((c) => {
+                    if (c.type === 'text') {
+                      return { text: c.text } satisfies TextPart
+                    }
+                    if (c.type === 'image_url') {
+                      return {
+                        fileData: {
+                          fileUri: c.image_url.url,
+                          mimeType: 'image/png',
+                        },
+                      } satisfies FileDataPart
+                    }
+                    if (c.type === 'file') {
+                      return {
+                        fileData: {
+                          fileUri: c.file.file_data!,
+                          mimeType: mime.getType(c.file.filename!)!,
+                        },
+                      } satisfies FileDataPart
+                    }
+                    throw new Error('Unsupported content type: ' + c.type)
+                  }),
           }) as GoogleAI.Content,
       ),
       tools: tools(),

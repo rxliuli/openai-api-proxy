@@ -59,7 +59,7 @@ export function cohere(env: ChatEnv): IChat {
       ),
       message: last(req.messages)?.content as string,
       temperature: req.temperature!,
-      maxTokens: req.max_tokens!,
+      maxTokens: req.max_completion_tokens!,
     }
   }
 

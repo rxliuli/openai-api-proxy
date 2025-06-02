@@ -8,13 +8,13 @@ import { last } from 'lodash-es'
 let llm: IChat
 let model: GenerativeModel
 beforeAll(() => {
-  const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GOOGLE_GEN_AI_API_KEY)
+  const genAI = new GoogleGenerativeAI(import.meta.env.GOOGLE_GEN_AI_API_KEY)
   model = genAI.getGenerativeModel({
     model: 'gemini-1.5-flash',
     generationConfig: { temperature: 0! },
   })
   llm = google({
-    GOOGLE_GEN_AI_API_KEY: import.meta.env.VITE_GOOGLE_GEN_AI_API_KEY,
+    GOOGLE_GEN_AI_API_KEY: import.meta.env.GOOGLE_GEN_AI_API_KEY,
   })
 })
 
