@@ -39,15 +39,25 @@ async function completions(c: Context<{ Bindings: Bindings }>) {
   if (!llm) {
     return c.json({ error: `Model ${req.model} not supported` }, 400)
   }
-  // console.log(req, llm.name)
   if (req.stream) {
     const abortController = new AbortController()
-    return streamSSE(c, async (stream) => {
-      stream.onAbort(() => abortController.abort())
-      for await (const it of llm.stream(req, abortController.signal)) {
-        stream.writeSSE({ data: JSON.stringify(it) })
-      }
-    })
+    return streamSSE(
+      c,
+      async (stream) => {
+        stream.onAbort(() => abortController.abort())
+        for await (const it of llm.stream(req, abortController.signal)) {
+          stream.writeSSE({ data: JSON.stringify(it) })
+        }
+      },
+      async (err, stream) => {
+        await stream.writeSSE({
+          data: JSON.stringify({
+            error: err.message,
+          }),
+        })
+        return stream.close()
+      },
+    )
   }
   return c.json(await llm?.invoke(req))
 }

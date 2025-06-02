@@ -50,12 +50,24 @@ async function completions(c: Context<{ Bindings: Bindings }>) {
   // console.log(req, llm.name)
   if (req.stream) {
     const abortController = new AbortController()
-    return streamSSE(c, async (stream) => {
-      stream.onAbort(() => abortController.abort())
-      for await (const it of llm.stream(req, abortController.signal)) {
-        stream.write(JSON.stringify(convertOpenaiChunkToOllama(it)) + '\n')
-      }
-    })
+    return streamSSE(
+      c,
+      async (stream) => {
+        stream.onAbort(() => abortController.abort())
+        for await (const it of llm.stream(req, abortController.signal)) {
+          stream.write(JSON.stringify(convertOpenaiChunkToOllama(it)) + '\n')
+        }
+      },
+      async (err, stream) => {
+        await stream.writeSSE({
+          data:
+            JSON.stringify({
+              error: err.message,
+            }) + '\n',
+        })
+        return stream.close()
+      },
+    )
   }
   return c.json(convertOpenaiToOllama(await llm?.invoke(req)))
 }
