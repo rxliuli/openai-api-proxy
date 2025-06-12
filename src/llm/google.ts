@@ -131,6 +131,7 @@ export function google(env: Record<string, string>): IChat {
       'gemini-2.5-flash-preview-native-audio-dialog',
       'gemini-2.5-flash-exp-native-audio-thinking-dialog',
       'gemini-2.5-flash-preview-tts',
+      'gemini-2.5-pro-preview-06-05',
       'gemini-2.5-pro-preview-05-06',
       'gemini-2.5-pro-preview-tts',
       'gemini-2.0-flash',
