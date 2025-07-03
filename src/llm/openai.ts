@@ -261,31 +261,21 @@ export function openai(env: Record<string, string>): IChat {
     'o4-mini-2025-04-16',
   ]
   // 将 client 从一个值换成函数来惰性求值，这样只会在实际请求时（而不是创建列表时）创建 OpenAI 对象
-  const client = () =>
-    new OpenAI({
+  const client_builder = (model: string): IChat => {
+    let base_client = new OpenAI({
       apiKey: env.OPENAI_API_KEY,
     })
+    if (oldModels.includes(model)) {
+      return openaiBase({ createClient: () => base_client })
+    } else {
+      return openaiResponse({ createClient: () => base_client })
+    }
+  }
   return {
     name: 'openai',
     supportModels: [...oldModels, ...newModels],
     requiredEnv: ['OPENAI_API_KEY'],
-    invoke(req) {
-      const oldCllient = openaiBase({ createClient: () => client() })
-      const newClient = openaiResponse({ createClient: () => client() })
-      if (oldModels.includes(req.model)) {
-        return oldCllient.invoke(req)
-      } else {
-        return newClient.invoke(req)
-      }
-    },
-    stream(req, signal) {
-      const oldCllient = openaiBase({ createClient: () => client() })
-      const newClient = openaiResponse({ createClient: () => client() })
-      if (oldModels.includes(req.model)) {
-        return oldCllient.stream(req, signal)
-      } else {
-        return newClient.stream(req, signal)
-      }
-    },
+    invoke: (req) => client_builder(req.model).invoke(req),
+    stream: (req, signal) => client_builder(req.model).stream(req, signal),
   }
 }
