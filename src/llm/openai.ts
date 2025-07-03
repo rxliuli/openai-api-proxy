@@ -190,9 +190,6 @@ function openaiResponse(options: { createClient: (req: ChatCompletionCreateParam
 }
 
 export function openai(env: Record<string, string>): IChat {
-  const client = new OpenAI({
-    apiKey: env.OPENAI_API_KEY,
-  })
   const oldModels = [
     'chatgpt-4o-latest',
     'codex-mini-latest',
@@ -263,13 +260,18 @@ export function openai(env: Record<string, string>): IChat {
     'o4-mini',
     'o4-mini-2025-04-16',
   ]
+  // 将 client 从一个值换成函数来惰性求值，这样只会在实际请求时（而不是创建列表时）创建 OpenAI 对象
+  const client = () =>
+    new OpenAI({
+      apiKey: env.OPENAI_API_KEY,
+    })
   return {
     name: 'openai',
     supportModels: [...oldModels, ...newModels],
     requiredEnv: ['OPENAI_API_KEY'],
     invoke(req) {
-      const oldCllient = openaiBase({ createClient: () => client })
-      const newClient = openaiResponse({ createClient: () => client })
+      const oldCllient = openaiBase({ createClient: () => client() })
+      const newClient = openaiResponse({ createClient: () => client() })
       if (oldModels.includes(req.model)) {
         return oldCllient.invoke(req)
       } else {
@@ -277,8 +279,8 @@ export function openai(env: Record<string, string>): IChat {
       }
     },
     stream(req, signal) {
-      const oldCllient = openaiBase({ createClient: () => client })
-      const newClient = openaiResponse({ createClient: () => client })
+      const oldCllient = openaiBase({ createClient: () => client() })
+      const newClient = openaiResponse({ createClient: () => client() })
       if (oldModels.includes(req.model)) {
         return oldCllient.stream(req, signal)
       } else {
