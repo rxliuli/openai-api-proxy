@@ -12,7 +12,13 @@ export function openrouter(env: Record<string, string>): IChat {
     },
   })
   r.name = 'OpenRouter'
-  r.supportModels = env.OPENROUTER_MODELS?.split(',').map((it) => it.trim()) ?? ['qwen-max']
+  r.supportModels = env.OPENROUTER_MODELS?.split(',').map((it) => it.trim()) ?? [
+    'anthropic/claude-opus-4.1',
+    'anthropic/claude-opus-4',
+    'anthropic/claude-sonnet-4',
+    'anthropic/claude-3.5-sonnet',
+    'anthropic/claude-3.5-haiku',
+  ]
   r.requiredEnv = ['OPENROUTER_API_KEY']
   return r
 }
