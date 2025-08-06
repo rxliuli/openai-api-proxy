@@ -277,6 +277,7 @@ export function anthropicVertex(env: Record<string, string>): IAnthropicVertex {
     'VERTEX_ANTROPIC_PROJECTID',
   ]
   r.supportModels = [
+    'claude-opus-4-1@20250805',
     'claude-opus-4@20250514',
     'claude-sonnet-4@20250514',
     'claude-3-7-sonnet@20250219',
@@ -290,12 +291,14 @@ export function anthropicVertex(env: Record<string, string>): IAnthropicVertex {
   return r
 }
 
+// https://docs.anthropic.com/en/docs/about-claude/models/overview
 export function anthropic(env: Record<string, string>): IAnthropicVertex {
   const createClient = () => new Anthropic({ apiKey: env.ANTROPIC_API_KEY })
   const r = anthropicBase(createClient as any) as IAnthropicVertex
   r.name = 'anthropic'
   r.requiredEnv = ['ANTROPIC_API_KEY']
   r.supportModels = [
+    'claude-opus-4-1-20250805',
     'claude-opus-4-20250514',
     'claude-sonnet-4-20250514',
     'claude-3-7-sonnet-20250219',
