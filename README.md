@@ -46,8 +46,9 @@ Environment variables
   - `DEEPSEEK_API_KEY`: DeepSeek API Key
 - Groq: Supports Groq models, e.g. `llama3-8b-8192`
   - `GROQ_API_KEY`: Groq API Key
-- Cerebras: Supports Cerebras models, e.g. `llama-3-8b`
+- Cerebras: Supports Cerebras models, e.g. `llama-3.1-8b`
   - `CEREBRAS_API_KEY`: Cerebras API Key
+  - `CEREBRAS_MODELS`: Cerebras Models, e.g. `llama-3.1-8b`
 - Azure OpenAI: Supports Azure OpenAI models, e.g. `gpt-4o-mini`
   - `AZURE_OPENAI_API_KEY`: Azure OpenAI API Key
   - `AZURE_OPENAI_ENDPOINT`: Azure OpenAI Endpoint

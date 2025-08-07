@@ -53,8 +53,9 @@
   - `LINGYIWANWU_API_KEY`: 零一万物 API Key
 - Groq: 支持 Groq 模型，例如 `llama3-8b-8192`
   - `GROQ_API_KEY`: Groq API Key
-- Cerebras: 支持 Cerebras 模型，例如 `llama-3-8b`
+- Cerebras: 支持 Cerebras 模型，例如 `llama-3.1-8b`
   - `CEREBRAS_API_KEY`: Cerebras API Key
+  - `CEREBRAS_MODELS`: Cerebras Models, 例如 `llama-3.1-8b`
 - Azure OpenAI: 支持 Azure OpenAI 模型，例如 `gpt-4o-mini`
   - `AZURE_OPENAI_API_KEY`: Azure OpenAI API Key
   - `AZURE_OPENAI_ENDPOINT`: Azure OpenAI Endpoint
