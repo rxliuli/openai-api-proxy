@@ -127,10 +127,14 @@ export function google(env: Record<string, string>): IChat {
   return {
     name: 'google',
     supportModels: [
+      'gemini-2.5-flash',
+      'gemini-2.5-flash-lite',
       'gemini-2.5-flash-preview-05-20',
+      'gemini-2.5-flash-image-preview',
       'gemini-2.5-flash-preview-native-audio-dialog',
       'gemini-2.5-flash-exp-native-audio-thinking-dialog',
       'gemini-2.5-flash-preview-tts',
+      'gemini-2.5-pro',
       'gemini-2.5-pro-preview-06-05',
       'gemini-2.5-pro-preview-05-06',
       'gemini-2.5-pro-preview-tts',
@@ -142,6 +146,7 @@ export function google(env: Record<string, string>): IChat {
       'gemini-1.5-pro',
       'gemini-embedding-exp',
       'gemini-2.0-flash-live-001',
+      'gemini-2.5-flash-live-preview',
     ],
     requiredEnv: ['GOOGLE_GEN_AI_API_KEY'],
     async invoke(req) {
